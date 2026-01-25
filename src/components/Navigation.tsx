@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router';
 import { ImageWithFallback } from './ImageWithFallback';
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { Menu, X } from 'lucide-react';
@@ -30,6 +30,11 @@ const Avatar = memo(() => (
         <ImageWithFallback
             src="https://avatars.githubusercontent.com/u/198452371?v=4"
             alt="Rishabh Agarwal"
+            loading="eager"
+            decoding="async"
+            width={800}
+            height={600}
+            fetchPriority='high'
             className="w-full h-full object-cover"
         />
     </motion.div>
@@ -37,8 +42,21 @@ const Avatar = memo(() => (
 
 const Navigation = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const activeSection = useScrollSpy(sectionIds);
     const { scrollToSection } = useSmoothScroll();
+
+    const [spyEnabled, setSpyEnabled] = useState(false);
+
+    useEffect(() => {
+        // Run after LCP / idle
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => setSpyEnabled(true));
+        } else {
+            setTimeout(() => setSpyEnabled(true), 200);
+        }
+    }, []);
+
+
+    const activeSection = useScrollSpy(sectionIds, undefined, spyEnabled);
 
     const handleNavClick = useCallback(
         (id: string) => {
@@ -55,7 +73,7 @@ const Navigation = () => {
             animate={{ y: 0 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-            <div className="max-w-6xl mx-auto px-6 py-6">
+            <div className="max-w-6xl mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
 
                     {/* Desktop Navigation */}
@@ -103,6 +121,11 @@ const Navigation = () => {
                                 <ImageWithFallback
                                     src="https://avatars.githubusercontent.com/u/198452371?v=4"
                                     alt="Rishabh Agarwal"
+                                    loading="eager"
+                                    decoding="async"
+                                    width={800}
+                                    height={600}
+                                    fetchPriority='high'
                                     className="w-full h-full object-cover"
                                 />
                             </motion.div>

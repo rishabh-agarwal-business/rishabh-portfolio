@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 
-export const CustomCursor = () => {
+const CustomCursor = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isHovering, setIsHovering] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -101,3 +101,5 @@ export const CustomCursor = () => {
         </>
     );
 }
+
+export default CustomCursor;

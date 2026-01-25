@@ -10,7 +10,7 @@ import { ImageWithFallback } from './ImageWithFallback';
  * Follows Single Responsibility Principle - only handles hero section display
  * Uses React.memo for performance optimization
  */
-export const Hero = () => {
+const Hero = () => {
     const { scrollToSection } = useSmoothScroll();
 
     return (
@@ -113,6 +113,10 @@ export const Hero = () => {
                             <ImageWithFallback
                                 src="https://avatars.githubusercontent.com/u/198452371?v=4"
                                 alt="Developer workspace"
+                                loading="eager"
+                                decoding="async"
+                                width={800}
+                                height={600}
                                 className="w-full h-auto"
                             />
                             <div className="absolute inset-0 bg-linear-to-t from-background/20 to-transparent" />
@@ -122,7 +126,7 @@ export const Hero = () => {
 
                 {/* About Section - Integrated Below */}
                 <motion.div
-                    className="max-w-4xl mx-auto space-y-4 text-lg text-muted-foreground leading-relaxed"
+                    className="max-w-6xl mx-auto space-y-4 text-lg text-muted-foreground leading-relaxed"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
@@ -186,3 +190,5 @@ export const Hero = () => {
         </section>
     );
 }
+
+export default Hero;
