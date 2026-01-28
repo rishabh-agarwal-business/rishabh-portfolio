@@ -53,10 +53,10 @@ export default function Experience() {
                                         <span className="text-zinc-400">@{exp.company}</span>
                                     </h3>
                                     <p className="text-sm text-muted-foreground mt-2">{exp.period}</p>
-                                    <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
+                                    {exp.remote && <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
                                         <MapPin className="w-4 h-4" />
                                         <span>Remote</span>
-                                    </div>
+                                    </div>}
                                 </div>
                                 <p className="text-muted-foreground leading-relaxed">
                                     {exp.description}
@@ -153,10 +153,10 @@ function ExperienceContent({
                     <p className="text-sm text-muted-foreground mt-2">
                         {experience.period}
                     </p>
-                    <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
+                    {experience.remote && <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
                         <MapPin className="w-4 h-4" />
                         <span>Remote</span>
-                    </div>
+                    </div>}
                 </div>
 
                 <p className="text-muted-foreground leading-relaxed">

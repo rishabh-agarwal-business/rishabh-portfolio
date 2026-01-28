@@ -137,6 +137,59 @@ export default function CaseStudy() {
                             </p>
                         </motion.div>
 
+                        {/* System Design Highlights */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                                System Design Highlights
+                            </h2>
+                            <div className="grid gap-3">
+                                {caseStudy.systemDesignHighlights.map((item, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="p-4 border border-border rounded-lg bg-background hover:border-primary/40 transition-colors"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                                    >
+                                        <p className="text-muted-foreground">{item}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Failure Scenarios Handled */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                                Failure Scenarios Handled
+                            </h2>
+                            <div className="grid gap-3">
+                                {caseStudy.failureScenariosHandled.map((scenario, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="flex gap-3 p-4 bg-accent rounded-lg hover:bg-primary/5 transition-colors"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                                    >
+                                        <span className="shrink-0 text-primary font-medium">#{index + 1}</span>
+                                        <p className="text-muted-foreground">{scenario}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
                         {/* Technical Architecture */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -198,6 +251,79 @@ export default function CaseStudy() {
                                     >
                                         <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                                         <p className="text-muted-foreground">{solution}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Performance Optimizations */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                                Performance Optimizations
+                            </h2>
+                            <div className="grid gap-3">
+                                {caseStudy.performanceOptimizations.map((opt, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="flex gap-3 p-4 border border-border rounded-lg hover:border-primary/40 transition-colors"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                                    >
+                                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                                        <p className="text-muted-foreground">{opt}</p>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Tradeoffs & Decisions */}
+                        <motion.div
+                            className="p-6 bg-accent rounded-lg"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                                Tradeoffs & Key Decisions
+                            </h2>
+                            <ul className="space-y-3">
+                                {caseStudy.tradeoffsAndDecisions.map((tradeoff, index) => (
+                                    <li key={index} className="text-muted-foreground leading-relaxed">
+                                        • {tradeoff}
+                                    </li>
+                                ))}
+                            </ul>
+                        </motion.div>
+
+                        {/* Future Enhancements */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                                Future Enhancements
+                            </h2>
+                            <div className="grid md:grid-cols-2 gap-3">
+                                {caseStudy.futureEnhancements.map((item, index) => (
+                                    <motion.div
+                                        key={index}
+                                        className="p-4 bg-background border border-border rounded-lg hover:border-primary/40 transition-colors"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                                    >
+                                        <p className="text-muted-foreground">{item}</p>
                                     </motion.div>
                                 ))}
                             </div>

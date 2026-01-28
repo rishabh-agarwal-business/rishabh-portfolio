@@ -5,6 +5,7 @@ import { useState, useCallback, memo, useEffect } from 'react';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { Menu, X } from 'lucide-react';
+import PortofolioImg from "@/assets/portfolio1.png";
 
 const navigationLinks = [
     { id: 'about', label: 'About' },
@@ -28,7 +29,7 @@ const Avatar = memo(() => (
         whileTap={{ scale: 0.95 }}
     >
         <ImageWithFallback
-            src="https://avatars.githubusercontent.com/u/198452371?v=4"
+            src={PortofolioImg}
             alt="Rishabh Agarwal"
             loading="eager"
             decoding="async"
@@ -119,7 +120,7 @@ const Navigation = () => {
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <ImageWithFallback
-                                    src="https://avatars.githubusercontent.com/u/198452371?v=4"
+                                    src={PortofolioImg}
                                     alt="Rishabh Agarwal"
                                     loading="eager"
                                     decoding="async"

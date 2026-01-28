@@ -4,6 +4,7 @@ import { GradientText } from './ui/GradientText';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { GradientButton } from './ui/GradientButton';
 import { ImageWithFallback } from './ImageWithFallback';
+import PortfolioImg from "@/assets/portfolio3.png";
 
 /**
  * Hero section component
@@ -111,12 +112,12 @@ const Hero = () => {
                             }}
                         >
                             <ImageWithFallback
-                                src="https://avatars.githubusercontent.com/u/198452371?v=4"
+                                src={PortfolioImg}
                                 alt="Developer workspace"
                                 loading="eager"
                                 decoding="async"
-                                width={800}
-                                height={600}
+                                width={900}
+                                height={900}
                                 className="w-full h-auto"
                             />
                             <div className="absolute inset-0 bg-linear-to-t from-background/20 to-transparent" />

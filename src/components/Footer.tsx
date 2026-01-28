@@ -16,11 +16,11 @@ export default function Footer() {
                     transition={{ duration: 0.5 }}
                 >
                     <p className="text-sm text-muted-foreground">
-                        © 2026 Senior Frontend Engineer Portfolio
+                        © 2026 Rishabh Agarwal
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    {/* <p className="text-sm text-muted-foreground">
                         Built with React, TypeScript & Tailwind CSS
-                    </p>
+                    </p> */}
                 </motion.div>
             </div>
         </footer>
