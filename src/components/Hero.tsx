@@ -83,7 +83,7 @@ const Hero = () => {
                                 iconPosition="left"
                                 asChild
                             >
-                                <a href="/resume.pdf" download="Rishabh_Agarwal_Resume.pdf">
+                                <a href="/Rishabh_Resume.pdf" download="Resume.pdf">
                                     Download Resume
                                 </a>
                             </GradientButton>
