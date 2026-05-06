@@ -57,6 +57,12 @@ const Navigation = () => {
         });
     }, [scrollToSection]);
 
+    useEffect(() => {
+        if (window.location.hash) {
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+    }, []);
+
     return (
         <motion.nav
             className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md"
@@ -71,6 +77,10 @@ const Navigation = () => {
                     <div className="hidden md:flex items-center gap-4 bg-accent/50 backdrop-blur-sm rounded-full px-4 py-2 border border-border/50">
                         <Link
                             to="/"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleNavClick('about')
+                            }}
                             className="flex items-center gap-3 group cursor-pointer pr-4 border-r border-border/50"
                         >
                             <Avatar />
@@ -102,7 +112,10 @@ const Navigation = () => {
                     </div>
 
                     <div className="flex md:hidden items-center gap-3 w-full">
-                        <Link to="/" className="flex items-center gap-3 group cursor-pointer">
+                        <Link to="/" onClick={(e) => {
+                            e.preventDefault();
+                            handleNavClick('about')
+                        }} className="flex items-center gap-3 group cursor-pointer">
                             <motion.div
                                 className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary transition-colors shrink-0"
                                 whileHover={{ scale: 1.05 }}
