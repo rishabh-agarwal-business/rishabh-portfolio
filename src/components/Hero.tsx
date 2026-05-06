@@ -4,7 +4,8 @@ import { GradientText } from './ui/GradientText';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { GradientButton } from './ui/GradientButton';
 import { ImageWithFallback } from './ImageWithFallback';
-import PortfolioImg from "@/assets/portfolio1.png";
+import portfolio400 from "@/assets/portfolio-400.webp";
+import portfolio800 from "@/assets/portfolio-800.webp";
 
 const Hero = () => {
     const { scrollToSection } = useSmoothScroll();
@@ -108,11 +109,11 @@ const Hero = () => {
                             }}
                         >
                             <ImageWithFallback
-                                src={PortfolioImg}
-                                alt="Developer workspace"
-                                fetchPriority="high"
+                                src={portfolio800}
+                                srcSet={`${portfolio400} 400w, ${portfolio800} 800w`}
+                                sizes="(max-width: 640px) 90vw, 400px"
                                 loading="eager"
-                                decoding="async"
+                                fetchPriority="high"
                                 className="w-full max-w-md mx-auto h-auto rounded-2xl"
                             />
 

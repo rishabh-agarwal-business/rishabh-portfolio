@@ -5,7 +5,7 @@ import { useState, useCallback, memo, useEffect, useMemo } from 'react';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { Menu, X } from 'lucide-react';
-import PortofolioImg from "@/assets/portfolio1.png";
+import PortofolioImg from "@/assets/portfolio-400.webp";
 
 const navigationLinks = [
     { id: 'about', label: 'About' },
