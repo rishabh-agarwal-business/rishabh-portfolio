@@ -49,12 +49,7 @@ const Navigation = () => {
 
     const handleNavClick = useCallback((id: string) => {
         setMobileMenuOpen(false);
-
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                scrollToSection(id);
-            });
-        });
+        scrollToSection(id);
     }, [scrollToSection]);
 
     useEffect(() => {
