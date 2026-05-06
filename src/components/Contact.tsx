@@ -3,10 +3,6 @@ import { motion } from 'motion/react';
 import { SectionHeader } from './ui/SectionHeader';
 import { GradientButton } from './ui/GradientButton';
 
-/**
- * Contact section component
- * Follows Single Responsibility Principle - only handles contact display
- */
 export default function Contact() {
     return (
         <section id="contact" className="py-20 px-6">
@@ -17,6 +13,7 @@ export default function Contact() {
                         subtitle="Open to discussing new opportunities and exciting projects"
                         titleClassName="text-3xl md:text-4xl text-center"
                         subtitleClassName="text-lg text-center"
+                        centered
                     />
 
                     <motion.div
@@ -27,7 +24,7 @@ export default function Contact() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
                         <motion.a
-                            href="mailto:hello@example.com"
+                            href="mailto:rishabh.developer1509@gmail.com"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             transition={{ duration: 0.2 }}
@@ -41,7 +38,7 @@ export default function Contact() {
                         </motion.a>
 
                         <motion.a
-                            href="https://linkedin.com"
+                            href="https://www.linkedin.com/in/rishi8a69127"
                             target="_blank"
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}
@@ -59,7 +56,7 @@ export default function Contact() {
                         </motion.a>
 
                         <motion.a
-                            href="https://github.com"
+                            href="https://github.com/rishabh-agarwal-business"
                             target="_blank"
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}

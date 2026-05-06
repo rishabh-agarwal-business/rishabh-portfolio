@@ -4,13 +4,8 @@ import { GradientText } from './ui/GradientText';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { GradientButton } from './ui/GradientButton';
 import { ImageWithFallback } from './ImageWithFallback';
-import PortfolioImg from "@/assets/portfolio3.png";
+import PortfolioImg from "@/assets/portfolio1.png";
 
-/**
- * Hero section component
- * Follows Single Responsibility Principle - only handles hero section display
- * Uses React.memo for performance optimization
- */
 const Hero = () => {
     const { scrollToSection } = useSmoothScroll();
 
@@ -18,7 +13,6 @@ const Hero = () => {
         <section id="about" className="pt-32 pb-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
-                    {/* Left Column - Text Content */}
                     <motion.div
                         className="space-y-6"
                         initial={{ opacity: 0, x: -30 }}
@@ -44,7 +38,7 @@ const Hero = () => {
                             transition={{ duration: 0.5, delay: 0.2 }}
                         >
                             <GradientText from="#9ca3af" via="#d1d5db" to="#cbd5e1">
-                                6+ Years of Experience
+                                7+ Years of Experience
                             </GradientText>
                         </motion.p>
 
@@ -87,13 +81,15 @@ const Hero = () => {
                                 variant="outline"
                                 icon={<Download className="w-4 h-4" />}
                                 iconPosition="left"
+                                asChild
                             >
-                                Download Resume
+                                <a href="/resume.pdf" download="Rishabh_Agarwal_Resume.pdf">
+                                    Download Resume
+                                </a>
                             </GradientButton>
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Column - Developer Image */}
                     <motion.div
                         className="relative"
                         initial={{ opacity: 0, x: 30 }}
@@ -114,12 +110,12 @@ const Hero = () => {
                             <ImageWithFallback
                                 src={PortfolioImg}
                                 alt="Developer workspace"
+                                fetchPriority="high"
                                 loading="eager"
                                 decoding="async"
-                                width={900}
-                                height={900}
-                                className="w-full h-auto"
+                                className="w-full max-w-md mx-auto h-auto rounded-2xl"
                             />
+
                             <div className="absolute inset-0 bg-linear-to-t from-background/20 to-transparent" />
                         </motion.div>
                     </motion.div>
@@ -139,7 +135,7 @@ const Hero = () => {
                     >
                         Senior Frontend Engineer with{" "}
                         <span className="font-semibold text-foreground">
-                            6+ years of experience
+                            7+ years of experience
                         </span>{" "}
                         building scalable, high-performance web applications
                         for enterprise clients in{" "}

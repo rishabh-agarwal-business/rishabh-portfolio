@@ -1,9 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, Play, Component, Blocks, FileCode, Layers, Palette, Activity, Code2, Package, Shield, Database, Server } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Component, Blocks, FileCode, Layers, Palette, Activity, Code2, Package, Shield, Database, Server } from 'lucide-react';
 import { motion } from 'motion/react';
 import { caseStudies } from '@/data/data';
 
-// Icon mapping for tech stack
 const techIcons: Record<string, any> = {
     'React': Component,
     'Redux Toolkit': Layers,
@@ -84,7 +83,7 @@ export default function CaseStudy() {
                         </motion.div>
 
                         {/* Demo Video Section */}
-                        <motion.div
+                        {/* <motion.div
                             className="space-y-4"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -105,10 +104,9 @@ export default function CaseStudy() {
                                         </p>
                                     </motion.div>
                                 </div>
-                                {/* Placeholder for actual video - can be replaced with iframe/video element */}
                                 <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent" />
                             </div>
-                        </motion.div>
+                        </motion.div> */}
 
                         {/* Problem Statement */}
                         <motion.div
@@ -183,7 +181,7 @@ export default function CaseStudy() {
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.4, delay: index * 0.1 }}
                                     >
-                                        <span className="shrink-0 text-primary font-medium">#{index + 1}</span>
+                                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                                         <p className="text-muted-foreground">{scenario}</p>
                                     </motion.div>
                                 ))}

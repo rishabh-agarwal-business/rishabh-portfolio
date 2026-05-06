@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router';
 import { ImageWithFallback } from './ImageWithFallback';
-import { useState, useCallback, memo, useEffect } from 'react';
+import { useState, useCallback, memo, useEffect, useMemo } from 'react';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { Menu, X } from 'lucide-react';
@@ -15,13 +15,6 @@ const navigationLinks = [
     { id: 'contact', label: 'Contact' },
 ];
 
-const sectionIds = navigationLinks.map(l => l.id);
-
-/**
- * Navigation component
- * Handles navigation only (SRP)
- */
-
 const Avatar = memo(() => (
     <motion.div
         className="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20 group-hover:border-primary transition-colors shrink-0"
@@ -33,8 +26,6 @@ const Avatar = memo(() => (
             alt="Rishabh Agarwal"
             loading="eager"
             decoding="async"
-            width={800}
-            height={600}
             fetchPriority='high'
             className="w-full h-full object-cover"
         />
@@ -48,24 +39,23 @@ const Navigation = () => {
     const [spyEnabled, setSpyEnabled] = useState(false);
 
     useEffect(() => {
-        // Run after LCP / idle
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => setSpyEnabled(true));
-        } else {
-            setTimeout(() => setSpyEnabled(true), 200);
-        }
+        const timer = setTimeout(() => setSpyEnabled(true), 300);
+        return () => clearTimeout(timer);
     }, []);
 
+    const sectionIds = useMemo(() => navigationLinks.map(l => l.id), []);
 
-    const activeSection = useScrollSpy(sectionIds, undefined, spyEnabled);
+    const activeSection = useScrollSpy(sectionIds, spyEnabled);
 
-    const handleNavClick = useCallback(
-        (id: string) => {
-            setMobileMenuOpen(false);
-            scrollToSection(id);
-        },
-        [scrollToSection]
-    );
+    const handleNavClick = useCallback((id: string) => {
+        setMobileMenuOpen(false);
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                scrollToSection(id);
+            });
+        });
+    }, [scrollToSection]);
 
     return (
         <motion.nav
@@ -111,7 +101,6 @@ const Navigation = () => {
                         })}
                     </div>
 
-                    {/* Mobile Header */}
                     <div className="flex md:hidden items-center gap-3 w-full">
                         <Link to="/" className="flex items-center gap-3 group cursor-pointer">
                             <motion.div
@@ -124,8 +113,6 @@ const Navigation = () => {
                                     alt="Rishabh Agarwal"
                                     loading="eager"
                                     decoding="async"
-                                    width={800}
-                                    height={600}
                                     fetchPriority='high'
                                     className="w-full h-full object-cover"
                                 />
@@ -151,7 +138,6 @@ const Navigation = () => {
                     </div>
                 </div>
 
-                {/* Mobile Menu */}
                 <AnimatePresence>
                     {mobileMenuOpen && (
                         <motion.div

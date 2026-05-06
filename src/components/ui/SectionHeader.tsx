@@ -6,25 +6,24 @@ interface SectionHeaderProps {
     title: string;
     subtitle?: string;
     icon?: ReactNode;
+    centered?: boolean;
     titleClassName?: string;
     subtitleClassName?: string;
 }
 
-/**
- * Reusable section header component with gradient text
- * Follows Single Responsibility Principle
- */
 export function SectionHeader({
     title,
     subtitle,
     icon,
     titleClassName = 'text-3xl md:text-4xl',
-    subtitleClassName = 'text-base'
+    subtitleClassName = 'text-base',
+    centered = false
 }: SectionHeaderProps) {
     return (
         <div className="space-y-2 mb-12">
             <motion.div
-                className="flex items-center gap-3"
+                className={`flex items-center gap-3 ${centered ? 'justify-center' : ''
+                    }`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

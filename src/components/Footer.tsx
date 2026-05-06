@@ -1,9 +1,5 @@
 import { motion } from 'motion/react';
 
-/**
- * Footer component
- * Follows Single Responsibility Principle - only handles footer display
- */
 export default function Footer() {
     return (
         <footer className="py-8 px-6 border-t border-border bg-linear-to-b from-background to-zinc-950/50">
@@ -18,9 +14,6 @@ export default function Footer() {
                     <p className="text-sm text-muted-foreground">
                         © 2026 Rishabh Agarwal
                     </p>
-                    {/* <p className="text-sm text-muted-foreground">
-                        Built with React, TypeScript & Tailwind CSS
-                    </p> */}
                 </motion.div>
             </div>
         </footer>

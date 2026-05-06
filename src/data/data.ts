@@ -30,209 +30,147 @@ export interface Experience {
 
 export const caseStudies: CaseStudy[] = [
     {
-        id: 'realtime-code-editor',
-        title: 'Realtime Collaborative Code Editor',
-        domain: 'Developer Tools / Realtime Collaboration',
-        techStack: [
-            'React',
-            'TypeScript',
-            'Monaco Editor',
-            'WebSockets',
-            'LocalStorage'
+        "id": "use-toolkit",
+        "title": "use-toolkit: React Hooks Library",
+        "domain": "Frontend Engineering / Open Source Systems Design",
+        "techStack": [
+            "React 18+",
+            "TypeScript 5+ (strict mode)",
+            "Jest 29+",
+            "React Testing Library 14+",
+            "tsup (ESM + CJS bundling)",
+            "WebSocket API",
+            "AbortController API",
+            "IndexedDB",
+            "localStorage",
+            "Intersection Observer API",
+            "Network Information API",
+            "requestIdleCallback",
+            "Node.js 18+",
+            "npm",
+            "GitHub Actions",
+            "ESLint + Prettier"
         ],
-        keyOutcomes: [
-            'Realtime multi-user collaboration',
-            'Offline-first editing with deterministic recovery',
-            'Correctness-first synchronization model',
-            'Scalable and extensible collaboration architecture'
+        "keyOutcomes": [
+            "Built a production-grade React Hooks library with zero dependencies and ~15KB gzipped bundle",
+            "Engineered advanced data layer (useQueryLite) with request deduplication, stale-while-revalidate, and intelligent caching",
+            "Reduced duplicate API calls by 60–80% using in-flight request tracking and cache reuse",
+            "Implemented resilient retry system with exponential backoff and jitter preventing thundering herd issues",
+            "Achieved 85%+ test coverage with 150+ test cases covering async hooks, browser APIs, and edge cases",
+            "Designed offline-first architecture with message queueing, local persistence, and deterministic recovery",
+            "Delivered 12 hooks, 12 demos, and 9 real-world applications (E-commerce, Chat, Dashboard, PWA, etc.)",
+            "Reduced bundle size by ~67% compared to React Query while preserving core capabilities",
+            "Enabled cross-tab synchronization and zero data loss across refresh, offline, and reconnection scenarios",
+            "Published enterprise-grade documentation including deep internals, system design, and implementation patterns"
         ],
-        shortDescription:
-            'Built a production-grade realtime collaborative code editor inspired by VS Code Live Share, emphasizing correctness, offline resilience, and performance.',
-        problemStatement:
-            'Developers require realtime collaboration tools that remain correct during concurrent edits, network failures, and multi-tab usage without sacrificing editor performance.',
-        businessContext:
-            'The platform targets developers and teams for pair programming, collaborative interviews, and live coding sessions, requiring low latency, high reliability, and consistent state across users.',
-        technicalArchitecture:
-            'Designed a layered architecture where Monaco Editor is the authoritative source of document and language state. A decoupled collaboration controller handles intent-based events, versioning, permissions, and offline queuing, while WebSockets act as a stateless transport layer. React is limited to UI orchestration.',
-        keyChallenges: [
-            'Avoiding React-controlled editor state to prevent performance degradation',
-            'Ensuring deterministic behavior under concurrent text edits',
-            'Synchronizing editor language across users without dual sources of truth',
-            'Recovering edits safely during network outages and browser refreshes',
-            'Rendering multi-user cursor presence efficiently'
+        "shortDescription": "Engineered a production-grade React Hooks library solving real-world frontend problems—data fetching with caching & deduplication, resilient WebSocket communication with auto-reconnection, offline-first storage, advanced state management (undo/redo, state machines), and performance optimization (virtualization, lazy loading). Built with zero dependencies, strict TypeScript, 85%+ test coverage, and deep system design principles including SWR, exponential backoff, and cross-tab synchronization.",
+        "problemStatement": "Modern React applications require multiple specialized libraries (React Query, Redux, WebSocket wrappers, storage utilities), leading to increased bundle size, complexity, and maintenance overhead. Existing solutions are either too simplistic (lacking caching, retries, offline support) or overly complex and heavy. There is a gap for a lightweight, production-ready solution that integrates core frontend patterns—data fetching, real-time communication, persistence, and performance—without requiring providers or complex setup.",
+        "businessContext": "Designed for startups, indie developers, and performance-sensitive applications needing fast iteration and minimal dependencies. Ideal for MVPs, dashboards, real-time apps, and PWAs where bundle size and simplicity are critical. Addresses pain points like slow load times, duplicated network requests, lack of offline support, and fragmented tooling. Applicable to millions of React developers seeking a lightweight alternative to enterprise-heavy frameworks.",
+        "technicalArchitecture": "Built as a modular, hook-based system using strict TypeScript with zero external dependencies. Core architecture includes: (1) Data Layer with global cache, in-flight request deduplication, stale-while-revalidate strategy, and retry engine; (2) Real-Time Layer with WebSocket state machine, auto-reconnect, heartbeat detection, and message queueing; (3) State Layer using past/present/future model for undo/redo and finite state machines; (4) Storage Layer with localStorage TTL + cross-tab sync and IndexedDB abstraction; (5) Performance Layer with Intersection Observer, virtualization, and idle task scheduling. Uses tsup for dual ESM/CJS builds and fully tree-shakeable exports.",
+        "keyChallenges": [
+            "Designing request deduplication system using shared Promise references to eliminate redundant network calls",
+            "Implementing stale-while-revalidate pattern balancing UX responsiveness with data freshness",
+            "Building retry logic with exponential backoff + jitter to prevent coordinated retry spikes",
+            "Preventing memory leaks using AbortController and lifecycle-safe cleanup across async hooks",
+            "Handling WebSocket reconnection with state machine design and exponential retry strategies",
+            "Ensuring no message loss via offline-safe queueing before connection establishment",
+            "Managing cross-tab synchronization using storage events without infinite loops",
+            "Designing undo/redo with past-present-future stacks and bounded memory usage",
+            "Handling browser API inconsistencies (Network API, IndexedDB, Intersection Observer)",
+            "Maintaining full TypeScript inference across generic hooks without sacrificing usability",
+            "Testing hooks dependent on browser APIs with robust mocking strategies",
+            "Balancing feature richness with strict bundle size constraints (~15KB target)"
         ],
-        solutionsImplemented: [
-            'Implemented an OT-lite collaboration model using versioned TEXT_DELTA events with monotonic ordering',
-            'Decoupled editor logic from React by emitting typed editor intent events',
-            'Built an offline delta queue persisted to localStorage and replayed deterministically on reconnect',
-            'Treated language as collaborative state applied directly to the Monaco model and synchronized via LANGUAGE_CHANGE events',
-            'Implemented role-based permissions (Leader, Editor, Viewer) with read-only enforcement for viewers',
-            'Optimized performance by batching high-frequency edits per animation frame and isolating presence updates'
+        "performanceOptimizations": [
+            "Implemented in-flight request deduplication reducing duplicate API calls by up to 80%",
+            "Used stale-while-revalidate to provide instant UI with background data refresh",
+            "Applied exponential backoff with jitter preventing server overload during retries",
+            "Stored cache outside React state minimizing unnecessary re-renders",
+            "Optimized WebSocket message handling using queue + batch processing",
+            "Used lazy loading via Intersection Observer reducing initial load time",
+            "Implemented virtualization supporting 10,000+ items with constant render cost",
+            "Deferred non-critical work using requestIdleCallback avoiding UI blocking",
+            "Applied TTL-based cache eviction preventing memory bloat",
+            "Optimized storage reads with on-demand expiration checks instead of polling",
+            "Minimized object allocations using structural sharing patterns",
+            "Enabled tree-shaking ensuring only used hooks are included in bundle"
         ],
-        performanceOptimizations: [
-            'Batched text delta emissions to reduce WebSocket overhead during rapid typing',
-            'Isolated cursor and selection updates as best-effort, non-blocking operations',
-            'Prevented multi-tab echo loops by ignoring self-originated events',
-            'Minimized React re-renders by keeping editor state outside React'
+        "failureScenariosHandled": [
+            "Network failures handled via retry with exponential backoff and capped delays",
+            "Component unmount during fetch prevented using AbortController cancellation",
+            "Offline WebSocket sends preserved using message queue and replay on reconnect",
+            "Zombie WebSocket connections detected using heartbeat mechanism",
+            "Cross-tab data inconsistency resolved via storage event synchronization",
+            "Stale cache handled via TTL expiration and background revalidation",
+            "Undo/redo inconsistencies resolved by clearing future state on new edits",
+            "IndexedDB/storage quota issues handled with graceful fallback strategies",
+            "Slow network conditions handled via adaptive logic (low-quality assets)",
+            "Race conditions in concurrent requests prevented using shared promise registry",
+            "Browser API absence handled via progressive enhancement and fallbacks",
+            "Memory leaks prevented via cleanup of timers, listeners, and async tasks"
         ],
-        failureScenariosHandled: [
-            'Network disconnection during active editing',
-            'Browser refresh while offline',
-            'Out-of-order or stale remote edit events',
-            'Concurrent edits from multiple users',
-            'Multiple tabs opened by the same user'
+        "systemDesignHighlights": [
+            "Global cache system with request deduplication and stale-while-revalidate strategy",
+            "Event-driven architecture enabling decoupled hook composition",
+            "Offline-first design with deterministic recovery and replay mechanisms",
+            "WebSocket lifecycle managed via finite state machine (connect → reconnect → stable)",
+            "Cross-tab synchronization using browser storage events",
+            "Exponential backoff with jitter preventing coordinated retry storms",
+            "Separation of concerns between data fetching, state, and UI layers",
+            "Tree-shakeable modular architecture reducing bundle footprint",
+            "Composable hooks enabling flexible integration patterns",
+            "Performance-first design minimizing re-renders and blocking operations"
         ],
-        systemDesignHighlights: [
-            'Monaco Editor as the single source of truth for document and language state',
-            'Intent-based collaboration model decoupled from UI and transport layers',
-            'Deterministic ordering guarantees for text correctness',
-            'Offline-first design with durable local persistence'
+        "tradeoffsAndDecisions": [
+            "Chose lightweight custom solution over React Query to reduce bundle size and complexity",
+            "Implemented explicit cache invalidation instead of automatic dependency tracking for predictability",
+            "Used localStorage for simplicity over IndexedDB for smaller datasets (with future extensibility)",
+            "Prioritized simplicity and composability over feature-heavy abstractions",
+            "Avoided provider-based architecture reducing setup overhead",
+            "Focused on client-side resilience instead of server-heavy solutions",
+            "Implemented manual retry strategy instead of relying on external libraries",
+            "Designed hooks to be independent enabling selective usage and tree-shaking"
         ],
-        tradeoffsAndDecisions: [
-            'Chose OT-lite over CRDT to reduce complexity while preserving deterministic behavior',
-            'Prioritized document correctness over perfect cursor presence fidelity',
-            'Deferred server-side persistence in favor of client-side offline recovery for faster iteration'
+        "futureEnhancements": [
+            "useStateMachine for complex UI workflows",
+            "useIndexedDB for large-scale offline storage",
+            "useVirtualizedList for high-performance rendering",
+            "useIdleCallback for background processing",
+            "DevTools extension for debugging cache and renders",
+            "Plugin system for extensibility",
+            "Advanced analytics and performance monitoring",
+            "CRDT-based real-time sync for collaborative apps"
         ],
-        futureEnhancements: [
-            'CRDT-based collaboration for large rooms and long-lived sessions',
-            'Server-side persistence with snapshots and delta compaction',
-            'Multi-file workspace and file tree support',
-            'Voice/video integration for pair programming',
-            'Fine-grained moderation and access controls'
+        "solutionsImplemented": [
+            "useQueryLite: Data fetching with caching, request deduplication, SWR, retry logic, and AbortController support",
+            "useMutationLite: Mutations with optimistic updates, cache invalidation, and lifecycle callbacks",
+            "useWebSocketAdvanced: Real-time communication with auto-reconnect, backoff, heartbeat, and message queue",
+            "useNetworkState: Network quality detection with adaptive behavior support",
+            "useUndoRedo: State history using past/present/future stack model",
+            "useLocalStorageSync: Cross-tab persistent storage with TTL and sync events",
+            "useIntersectionObserverAdvanced: Lazy loading and visibility detection",
+            "useRenderTracker: Performance debugging with render analysis",
+            "useIndexedDB: Store notes locally, sync to server",
+            "useVirtualizedList: Render large lists efficiently",
+            "useIdleCallback: Background tasks"
         ],
-        impactMetrics: [
-            'Zero data loss during offline and reconnect scenarios',
-            'Sub-50ms perceived latency for local edits',
-            'Stable multi-user synchronization across tabs and browsers',
-            'Architecture designed to scale to CRDT without major refactor'
+        "impactMetrics": [
+            "Reduced redundant API calls by up to 80% via request deduplication",
+            "Improved perceived performance using instant cache-first rendering",
+            "Maintained ~15KB gzipped bundle size with zero dependencies",
+            "Achieved 85%+ test coverage ensuring reliability across edge cases",
+            "Enabled offline-safe operations with zero message/data loss",
+            "Supported scalable UI patterns handling 10,000+ items efficiently",
+            "Provided production-ready hooks usable independently or combined",
+            "Delivered comprehensive documentation covering internals and real-world usage",
+            "Improved developer productivity by eliminating need for multiple libraries",
+            "Ensured cross-browser compatibility with graceful degradation strategies"
         ]
-    },
-    // {
-    //     id: 'genie',
-    //     title: 'Genie – Secure Banking Search Engine',
-    //     domain: 'FinTech',
-    //     techStack: ['Angular', 'RxJS', 'TypeScript', 'Custom Security Framework'],
-    //     keyOutcomes: ['Bank-grade security', 'Sub-second search results', 'Regulatory compliance'],
-    //     shortDescription: 'Developed a high-security search platform for banking applications with real-time data encryption and compliance monitoring.',
-    //     problemStatement: 'Financial institutions required a powerful search engine that could handle sensitive banking data while maintaining strict security protocols and regulatory compliance across multiple jurisdictions.',
-    //     businessContext: 'Banks need to provide instant access to financial records, transactions, and customer data while ensuring zero data leakage and maintaining audit trails for regulatory compliance.',
-    //     technicalArchitecture: 'Built with Angular for robust enterprise application structure. Leveraged RxJS for reactive data streams and complex async operations. Implemented multi-layer security with custom encryption protocols. Created a sophisticated caching strategy for performance optimization.',
-    //     keyChallenges: [
-    //         'Implementing end-to-end encryption without compromising search speed',
-    //         'Managing complex regulatory requirements across different regions',
-    //         'Handling concurrent searches with large datasets efficiently',
-    //         'Maintaining detailed audit logs without performance degradation'
-    //     ],
-    //     solutionsImplemented: [
-    //         'Developed a custom security framework with field-level encryption',
-    //         'Implemented intelligent caching with secure data invalidation',
-    //         'Created a sophisticated query optimizer for complex financial searches',
-    //         'Built comprehensive audit logging system with minimal performance impact',
-    //         'Designed a modular architecture supporting multi-tenancy'
-    //     ],
-    //     performanceOptimizations: [
-    //         'Batched text delta emissions to reduce WebSocket overhead during rapid typing',
-    //         'Isolated cursor and selection updates as best-effort, non-blocking operations',
-    //         'Prevented multi-tab echo loops by ignoring self-originated events',
-    //         'Minimized React re-renders by keeping editor state outside React'
-    //     ],
-    //     failureScenariosHandled: [
-    //         'Network disconnection during active editing',
-    //         'Browser refresh while offline',
-    //         'Out-of-order or stale remote edit events',
-    //         'Concurrent edits from multiple users',
-    //         'Multiple tabs opened by the same user'
-    //     ],
-    //     systemDesignHighlights: [
-    //         'Monaco Editor as the single source of truth for document and language state',
-    //         'Intent-based collaboration model decoupled from UI and transport layers',
-    //         'Deterministic ordering guarantees for text correctness',
-    //         'Offline-first design with durable local persistence'
-    //     ],
-    //     tradeoffsAndDecisions: [
-    //         'Chose OT-lite over CRDT to reduce complexity while preserving deterministic behavior',
-    //         'Prioritized document correctness over perfect cursor presence fidelity',
-    //         'Deferred server-side persistence in favor of client-side offline recovery for faster iteration'
-    //     ],
-    //     futureEnhancements: [
-    //         'CRDT-based collaboration for large rooms and long-lived sessions',
-    //         'Server-side persistence with snapshots and delta compaction',
-    //         'Multi-file workspace and file tree support',
-    //         'Voice/video integration for pair programming',
-    //         'Fine-grained moderation and access controls'
-    //     ],
-    //     impactMetrics: [
-    //         'Achieved sub-500ms average search response time',
-    //         'Passed SOC 2 Type II and PCI DSS compliance audits',
-    //         'Processed 10M+ searches daily with 99.99% accuracy',
-    //         'Zero security breaches across 2+ years of production use'
-    //     ]
-    // },
-    // {
-    //     id: 'data-transform',
-    //     title: 'Data Transformation Tool',
-    //     domain: 'Enterprise SaaS',
-    //     techStack: ['React', 'Redux', 'Web Workers', 'Custom Performance Framework'],
-    //     keyOutcomes: ['90% faster processing', 'Improved UX', 'Scalable to large datasets'],
-    //     shortDescription: 'Optimized a data transformation tool handling large datasets with advanced performance optimization techniques.',
-    //     problemStatement: 'Enterprise users struggled with slow data transformation processes that blocked the UI and caused frustration when working with large CSV and JSON files exceeding 100MB.',
-    //     businessContext: 'Data teams needed to quickly transform, validate, and export large datasets without experiencing browser freezes or crashes, while maintaining data integrity throughout the process.',
-    //     technicalArchitecture: 'Leveraged Web Workers for off-main-thread data processing. Implemented virtual scrolling for efficient rendering of large datasets. Created a custom state management pattern optimized for bulk operations. Utilized IndexedDB for client-side data persistence.',
-    //     keyChallenges: [
-    //         'Processing large files without blocking the main thread',
-    //         'Maintaining UI responsiveness during intensive operations',
-    //         'Memory management for datasets exceeding available RAM',
-    //         'Ensuring data integrity during complex transformations'
-    //     ],
-    //     solutionsImplemented: [
-    //         'Implemented Web Workers for parallel data processing',
-    //         'Created virtual scrolling with dynamic row heights',
-    //         'Developed streaming data processing for files larger than memory',
-    //         'Built an optimized diff algorithm for tracking changes',
-    //         'Implemented progressive loading with visual feedback'
-    //     ],
-    //     performanceOptimizations: [
-    //         'Batched text delta emissions to reduce WebSocket overhead during rapid typing',
-    //         'Isolated cursor and selection updates as best-effort, non-blocking operations',
-    //         'Prevented multi-tab echo loops by ignoring self-originated events',
-    //         'Minimized React re-renders by keeping editor state outside React'
-    //     ],
-    //     failureScenariosHandled: [
-    //         'Network disconnection during active editing',
-    //         'Browser refresh while offline',
-    //         'Out-of-order or stale remote edit events',
-    //         'Concurrent edits from multiple users',
-    //         'Multiple tabs opened by the same user'
-    //     ],
-    //     systemDesignHighlights: [
-    //         'Monaco Editor as the single source of truth for document and language state',
-    //         'Intent-based collaboration model decoupled from UI and transport layers',
-    //         'Deterministic ordering guarantees for text correctness',
-    //         'Offline-first design with durable local persistence'
-    //     ],
-    //     tradeoffsAndDecisions: [
-    //         'Chose OT-lite over CRDT to reduce complexity while preserving deterministic behavior',
-    //         'Prioritized document correctness over perfect cursor presence fidelity',
-    //         'Deferred server-side persistence in favor of client-side offline recovery for faster iteration'
-    //     ],
-    //     futureEnhancements: [
-    //         'CRDT-based collaboration for large rooms and long-lived sessions',
-    //         'Server-side persistence with snapshots and delta compaction',
-    //         'Multi-file workspace and file tree support',
-    //         'Voice/video integration for pair programming',
-    //         'Fine-grained moderation and access controls'
-    //     ],
-    //     impactMetrics: [
-    //         '90% improvement in processing speed for 100MB+ files',
-    //         'Zero UI blocking during data operations',
-    //         'Successfully handled datasets up to 500MB in browser',
-    //         'Reduced user-reported errors by 75%'
-    //     ]
-    // }
+    }
 ];
 
 export const skills = {
-    'Languages': ['JavaScript (ES6+)', 'TypeScript'],
+    'Languages': ['JavaScript (ES6+)', 'TypeScript', 'Python'],
     'Frameworks & Libraries': ['React', 'Angular', 'Redux', 'Redux Toolkit', 'RxJS'],
     'UI & Design Systems': ['Material UI', 'Bootstrap', 'Responsive Design', 'CSS-in-JS'],
     'Architecture & Patterns': ['Modular Architecture', 'Component-Driven Development', 'State Management Patterns'],

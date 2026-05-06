@@ -1,32 +1,68 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
-/**
- * Custom hook for smooth scrolling functionality
- * Follows Single Responsibility Principle
- */
+const NAVBAR_HEIGHT = 80;
+
 export function useSmoothScroll() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const scrollToSection = useCallback((id: string) => {
-        // If not on homepage, navigate to homepage first
-        if (location.pathname !== '/') {
-            navigate('/');
-            // Wait for navigation to complete before scrolling
-            setTimeout(() => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
+    // ✅ Scroll handler (runs AFTER route render)
+    useEffect(() => {
+        if (location.hash) {
+            const id = location.hash.replace('#', '');
+
+            let attempts = 0;
+
+            const tryScroll = () => {
+                const el = document.getElementById(id);
+
+                if (el) {
+                    const y =
+                        el.getBoundingClientRect().top +
+                        window.scrollY -
+                        NAVBAR_HEIGHT;
+
+                    window.scrollTo({
+                        top: y,
+                        behavior: 'smooth',
+                    });
+                } else if (attempts < 10) {
+                    attempts++;
+                    requestAnimationFrame(tryScroll);
                 }
-            }, 100);
-        } else {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
+            };
+
+            tryScroll();
         }
-    }, [navigate, location.pathname]);
+    }, [location]);
+
+    // ✅ Navigate OR scroll
+    const scrollToSection = useCallback(
+        (id: string) => {
+            if (location.pathname !== '/') {
+                // 👇 push hash → triggers effect after render
+                navigate(`/#${id}`);
+            } else {
+                // 👇 update hash without navigation
+                window.history.replaceState(null, '', `#${id}`);
+
+                const el = document.getElementById(id);
+                if (el) {
+                    const y =
+                        el.getBoundingClientRect().top +
+                        window.scrollY -
+                        NAVBAR_HEIGHT;
+
+                    window.scrollTo({
+                        top: y,
+                        behavior: 'smooth',
+                    });
+                }
+            }
+        },
+        [navigate, location.pathname]
+    );
 
     return { scrollToSection };
 }
