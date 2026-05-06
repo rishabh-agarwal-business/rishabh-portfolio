@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Suspense, useEffect } from "react"
 import { lazy } from 'react';
+import { Wrapper } from './Wrapper';
 
 const CustomCursor = lazy(() => import('./components/CustomCursor'));
 const Navigation = lazy(() => import('./components/Navigation'));
@@ -14,18 +15,32 @@ const Experience = lazy(() => import('./components/Experience'));
 const Architecture = lazy(() => import('./components/Architecture'));
 const Contact = lazy(() => import('./components/Contact'));
 
-
 function HomePage() {
   return (
     <>
       <Hero />
-      <Skills />
-      <CaseStudies />
-      <Experience />
-      <Architecture />
-      <Contact />
+
+      <Wrapper>
+        <Skills />
+      </Wrapper>
+
+      <Wrapper>
+        <CaseStudies />
+      </Wrapper>
+
+      <Wrapper>
+        <Experience />
+      </Wrapper>
+
+      <Wrapper>
+        <Architecture />
+      </Wrapper>
+
+      <Wrapper>
+        <Contact />
+      </Wrapper>
     </>
-  )
+  );
 }
 
 function App() {
