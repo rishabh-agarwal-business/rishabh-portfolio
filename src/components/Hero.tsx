@@ -1,15 +1,12 @@
-import { ArrowRight, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { motion } from 'motion/react';
 import { GradientText } from './ui/GradientText';
-import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { GradientButton } from './ui/GradientButton';
 import { ImageWithFallback } from './ImageWithFallback';
 import portfolio400 from "@/assets/portfolio-400.webp";
 import portfolio800 from "@/assets/portfolio-800.webp";
 
 const Hero = () => {
-    const { scrollToSection } = useSmoothScroll();
-
     return (
         <section id="about" className="pt-32 pb-20 px-6">
             <div className="max-w-6xl mx-auto">
@@ -65,26 +62,15 @@ const Hero = () => {
                             web applications.
                         </motion.p>
 
-                        <motion.div
-                            className="flex flex-wrap gap-4 pt-4"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                        >
-                            <GradientButton
-                                onClick={() => scrollToSection('case-studies')}
-                                icon={<ArrowRight className="w-4 h-4" />}
-                            >
-                                View Case Studies
-                            </GradientButton>
-
+                        <motion.div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                             <GradientButton
                                 variant="outline"
                                 icon={<Download className="w-4 h-4" />}
                                 iconPosition="left"
-                                asChild
+                                fullWidth
+                                className="sm:w-auto"
                             >
-                                <a href="/Rishabh_Resume.pdf" download="Resume.pdf">
+                                <a href="/Rishabh_Resume.pdf" download>
                                     Download Resume
                                 </a>
                             </GradientButton>
@@ -114,6 +100,7 @@ const Hero = () => {
                                 sizes="(max-width: 640px) 90vw, 400px"
                                 loading="eager"
                                 fetchPriority="high"
+                                alt='Rishabh Agarwal'
                                 className="w-full max-w-md mx-auto h-auto rounded-2xl"
                             />
 

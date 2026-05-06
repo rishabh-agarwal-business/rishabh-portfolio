@@ -52,13 +52,18 @@ function App() {
     <>
       <BrowserRouter>
         <div className="min-h-screen font-['Inter',sans-serif] md:cursor-none">
+          <CustomCursor />
+
           <Suspense fallback={null}>
-            <CustomCursor />
             <Navigation />
-            <Routes>
-              <Route path='/' element={<HomePage />} />
-              <Route path='/case-study/:id' element={<CaseStudy />} />
-            </Routes>
+          </Suspense>
+
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/case-study/:id' element={<CaseStudy />} />
+          </Routes>
+
+          <Suspense fallback={null}>
             <Footer />
           </Suspense>
         </div>

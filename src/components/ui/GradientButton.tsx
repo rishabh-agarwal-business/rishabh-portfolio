@@ -1,20 +1,25 @@
-import type { ReactNode, ButtonHTMLAttributes } from 'react';
-import { motion, type MotionProps } from 'motion/react';
+import { memo, type ReactNode, type ButtonHTMLAttributes } from 'react';
+import { motion } from 'framer-motion';
+import type { MotionProps } from 'framer-motion';
+
+type Variant = 'primary' | 'secondary' | 'outline';
+
+const VARIANT_CLASSES: Record<Variant, string> = {
+    primary: 'bg-gradient-to-r from-zinc-600 to-gray-700 text-white hover:shadow-lg hover:shadow-zinc-600/30',
+    secondary: 'bg-gradient-to-r from-zinc-700/40 to-gray-700/40 text-foreground border border-zinc-500/50',
+    outline: 'border-2 border-border hover:bg-accent hover:border-zinc-500/50'
+};
 
 interface GradientButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as'> {
     children: ReactNode;
-    variant?: 'primary' | 'secondary' | 'outline';
+    variant?: Variant;
     icon?: ReactNode;
     iconPosition?: 'left' | 'right';
     fullWidth?: boolean;
     as?: 'button' | 'span';
 }
 
-/**
- * Reusable gradient button component with motion animations
- * Follows Open/Closed Principle - extensible through variants
- */
-export function GradientButton({
+export const GradientButton = memo(function GradientButton({
     children,
     variant = 'primary',
     icon,
@@ -23,17 +28,22 @@ export function GradientButton({
     as = 'button',
     className = '',
     ...props
-}: GradientButtonProps & MotionProps<HTMLButtonElement>) {
-    const baseClasses = 'inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all';
+}: GradientButtonProps & MotionProps) {
 
-    const variantClasses = {
-        primary: 'bg-gradient-to-r from-zinc-600 to-gray-700 text-white hover:shadow-lg hover:shadow-zinc-600/30',
-        secondary: 'bg-gradient-to-r from-zinc-700/40 to-gray-700/40 text-foreground border border-zinc-500/50',
-        outline: 'border-2 border-border hover:bg-accent hover:border-zinc-500/50'
-    };
+    const baseClasses = `
+inline-flex items-center justify-center
+gap-1.5 sm:gap-2
+px-4 sm:px-6
+min-h-[44px] sm:min-h-[48px]
+text-sm sm:text-base
+rounded-lg font-semibold
+cursor-pointer transition-all
+whitespace-nowrap
+touch-manipulation
+`;
 
     const widthClass = fullWidth ? 'w-full justify-center' : '';
-    const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${widthClass} ${className}`;
+    const combinedClasses = `${baseClasses} ${VARIANT_CLASSES[variant]} ${widthClass} ${className}`;
 
     const content = (
         <>
@@ -44,11 +54,7 @@ export function GradientButton({
     );
 
     if (as === 'span') {
-        return (
-            <span className={combinedClasses}>
-                {content}
-            </span>
-        );
+        return <span className={combinedClasses}>{content}</span>;
     }
 
     return (
@@ -62,4 +68,4 @@ export function GradientButton({
             {content}
         </motion.button>
     );
-}
+});

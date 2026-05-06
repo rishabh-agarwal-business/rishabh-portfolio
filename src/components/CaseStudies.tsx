@@ -188,7 +188,7 @@ function CaseStudiesContent({
                 {/* View Full Case Study Button */}
                 <div className="pt-2">
                     <Link to={`/case-study/${project.id}`}>
-                        <GradientButton size="default" className="group/btn">
+                        <GradientButton className="group/btn">
                             <span>View Full Case Study</span>
                             <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                         </GradientButton>
