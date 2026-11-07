@@ -12,11 +12,12 @@ export default function Experience() {
     const [selectedCompany, setSelectedCompany] = useState(0);
 
     return (
-        <section id="experience" className="py-20 px-6">
+        <section id="experience" aria-labelledby="experience-title" className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <SectionHeader
+                    id="experience-title"
                     title="Work Experience"
-                    subtitle="I switch a lot of companies. It's mostly about the culture."
+                    subtitle="Healthcare, consulting, data and banking — shipping production frontends across four organizations."
                 />
 
                 {/* Desktop Layout: Sidebar + Content */}
@@ -39,7 +40,7 @@ export default function Experience() {
                 <div className="block md:hidden space-y-6">
                     {experience.map((exp, index) => (
                         <motion.div
-                            key={index}
+                            key={exp.company}
                             className="p-6 border border-border rounded-lg bg-accent/30"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -48,7 +49,7 @@ export default function Experience() {
                         >
                             <div className="space-y-3">
                                 <div>
-                                    <h3 className="text-xl font-bold font-['Space_Grotesk',sans-serif]">
+                                    <h3 className="text-xl font-bold font-display">
                                         {exp.role}{' '}
                                         <span className="text-zinc-400">@{exp.company}</span>
                                     </h3>
@@ -104,7 +105,9 @@ function ExperienceSidebar({
         >
             {experience.map((exp: Experience, index: number) => (
                 <motion.button
-                    key={index}
+                    key={exp.company}
+                    type="button"
+                    aria-pressed={selectedCompany === index}
                     onClick={() => onSelectCompany(index)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all cursor-pointer ${selectedCompany === index
                         ? 'bg-linear-to-r from-zinc-700/40 to-gray-700/40 border-l-2 border-zinc-500'
@@ -133,7 +136,7 @@ function ExperienceContent({
     experience,
     selectedCompany,
 }: {
-    experience: Experience[number];
+    experience: Experience;
     selectedCompany: number;
 }) {
     return (
@@ -146,7 +149,7 @@ function ExperienceContent({
         >
             <div className="space-y-4">
                 <div>
-                    <h3 className="text-2xl font-bold font-['Space_Grotesk',sans-serif]">
+                    <h3 className="text-2xl font-bold font-display">
                         {experience.role}{' '}
                         <span className="text-zinc-400">@{experience.company}</span>
                     </h3>

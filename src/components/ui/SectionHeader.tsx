@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { GradientText } from './GradientText';
 
 interface SectionHeaderProps {
+    id?: string;
     title: string;
     subtitle?: string;
     icon?: ReactNode;
@@ -12,6 +13,7 @@ interface SectionHeaderProps {
 }
 
 export function SectionHeader({
+    id,
     title,
     subtitle,
     icon,
@@ -34,7 +36,7 @@ export function SectionHeader({
                         {icon}
                     </div>
                 )}
-                <h2 className={`font-bold font-['Space_Grotesk',sans-serif] ${titleClassName}`}>
+                <h2 id={id} className={`font-bold font-display ${titleClassName}`}>
                     <GradientText>{title}</GradientText>
                 </h2>
             </motion.div>

@@ -81,6 +81,11 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme {
+    --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -131,8 +136,26 @@
     }
 
     body {
-        @apply bg-background text-foreground;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        @apply bg-background text-foreground font-sans antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background: oklch(0.45 0 0 / 60%);
+        color: #fff;
+    }
+
+    /* Visible keyboard focus everywhere (mouse clicks stay clean) */
+    :focus-visible {
+        outline: 2px solid oklch(0.8 0 0);
+        outline-offset: 3px;
+        border-radius: 6px;
+    }
+
+    /* Only hide the native cursor while the custom cursor is actually active */
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
+        cursor: none !important;
     }
 
     /**
@@ -144,10 +167,6 @@
         font-size: var(--font-size);
         scroll-behavior: smooth;
         scroll-padding-top: 80px;
-    }
-
-    * {
-        scroll-behavior: smooth;
     }
 
     h1 {
@@ -209,5 +228,15 @@
     .animate-gradient {
         background-size: 200% 200%;
         animation: gradient 3s ease infinite;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .animate-gradient {
+        animation: none;
     }
 }

@@ -1,10 +1,11 @@
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, Component, Blocks, FileCode, Layers, Palette, Activity, Code2, Package, Shield, Database, Server } from 'lucide-react';
+import { useParams, Link } from 'react-router';
+import { ArrowLeft, ArrowRight, CheckCircle2, Component, Blocks, FileCode, Layers, Palette, Activity, Code2, Package, Shield, Database, Server, type LucideIcon } from 'lucide-react';
 import { motion } from 'motion/react';
-import { caseStudies } from '@/data/data';
+import { caseStudies, profile } from '@/data/data';
+import NotFound from './NotFound';
 import ProjectLinks from './common/ProjectLinks';
 
-const techIcons: Record<string, any> = {
+const techIcons: Record<string, LucideIcon> = {
     'React': Component,
     'Redux Toolkit': Layers,
     'Redux': Layers,
@@ -23,23 +24,17 @@ const techIcons: Record<string, any> = {
 
 export default function CaseStudy() {
     const { id } = useParams<{ id: string }>();
-    const caseStudy = caseStudies.find(cs => cs.id === id);
+    const index = caseStudies.findIndex(cs => cs.id === id);
+    const caseStudy = caseStudies[index];
 
-    if (!caseStudy) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <h2 className="text-2xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Case Study Not Found</h2>
-                    <Link to="/" className="text-primary hover:underline cursor-pointer">
-                        Return to Home
-                    </Link>
-                </div>
-            </div>
-        );
-    }
+    if (!caseStudy) return <NotFound />;
+
+    const next = caseStudies[(index + 1) % caseStudies.length];
 
     return (
-        <div className="min-h-screen">
+        <article className="min-h-screen">
+            <title>{`${caseStudy.title} — Case Study | ${profile.name}`}</title>
+            <meta name="description" content={caseStudy.shortDescription} />
             <div className="pt-24 pb-20 px-6">
                 <div className="max-w-4xl mx-auto">
                     <motion.div
@@ -49,7 +44,8 @@ export default function CaseStudy() {
                     >
                         <Link
                             to="/"
-                            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors cursor-pointer"
+                            state={{ scrollTo: 'case-studies' }}
+                            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back to Portfolio
@@ -65,15 +61,16 @@ export default function CaseStudy() {
                             transition={{ duration: 0.5, delay: 0.1 }}
                         >
                             <div className="flex items-center gap-3 flex-wrap">
-                                <h1 className="text-4xl flex items-center gap-3 font-semibold font-['Space_Grotesk',sans-serif]">
+                                <h1 className="text-3xl md:text-4xl font-semibold font-display">
                                     {caseStudy.title}
-                                    <ProjectLinks
+                                </h1>
+                                <ProjectLinks
+                                        projectName={caseStudy.title}
                                         repoLink={caseStudy.repoLink}
                                         packageLink={caseStudy.packageLink}
                                         demoLink={caseStudy.demoLink}
                                         size={24}
                                     />
-                                </h1>
                                 <span className="px-3 py-1 bg-accent text-sm rounded-full">
                                     {caseStudy.domain}
                                 </span>
@@ -82,8 +79,8 @@ export default function CaseStudy() {
                                 {caseStudy.techStack.map((tech) => {
                                     const Icon = techIcons[tech] || Code2;
                                     return (
-                                        <span key={tech} className="px-3 py-1 bg-secondary text-sm rounded flex items-center gap-2 cursor-pointer hover:bg-primary/10 transition-colors">
-                                            <Icon className="w-3.5 h-3.5 text-primary" />
+                                        <span key={tech} className="px-3 py-1 bg-secondary text-sm rounded flex items-center gap-2">
+                                            <Icon className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
                                             {tech}
                                         </span>
                                     );
@@ -98,7 +95,7 @@ export default function CaseStudy() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                         >
-                            <h2 className="text-xl font-semibold font-['Space_Grotesk',sans-serif]">Demo Video</h2>
+                            <h2 className="text-xl font-semibold font-display">Demo Video</h2>
                             <div className="relative aspect-video bg-accent rounded-lg overflow-hidden border border-border group cursor-pointer">
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <motion.div
@@ -125,7 +122,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Problem Statement</h2>
+                            <h2 className="text-xl font-semibold mb-4 font-display">Problem Statement</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 {caseStudy.problemStatement}
                             </p>
@@ -138,7 +135,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Business Context</h2>
+                            <h2 className="text-xl font-semibold mb-4 font-display">Business Context</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 {caseStudy.businessContext}
                             </p>
@@ -151,7 +148,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                            <h2 className="text-xl font-semibold mb-4 font-display">
                                 System Design Highlights
                             </h2>
                             <div className="grid gap-3">
@@ -177,7 +174,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                            <h2 className="text-xl font-semibold mb-4 font-display">
                                 Failure Scenarios Handled
                             </h2>
                             <div className="grid gap-3">
@@ -204,7 +201,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Technical Architecture</h2>
+                            <h2 className="text-xl font-semibold mb-4 font-display">Technical Architecture</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 {caseStudy.technicalArchitecture}
                             </p>
@@ -217,12 +214,12 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Key Challenges</h2>
+                            <h2 className="text-xl font-semibold mb-4 font-display">Key Challenges</h2>
                             <div className="grid gap-3">
                                 {caseStudy.keyChallenges.map((challenge, index) => (
                                     <motion.div
                                         key={index}
-                                        className="flex gap-3 p-4 border border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors"
+                                        className="flex gap-3 p-4 border border-border rounded-lg hover:border-primary/50 transition-colors"
                                         initial={{ opacity: 0, x: -20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
@@ -244,12 +241,12 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">Solutions Implemented</h2>
+                            <h2 className="text-xl font-semibold mb-4 font-display">Solutions Implemented</h2>
                             <div className="grid gap-3">
                                 {caseStudy.solutionsImplemented.map((solution, index) => (
                                     <motion.div
                                         key={index}
-                                        className="flex gap-3 p-4 bg-accent rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"
+                                        className="flex gap-3 p-4 bg-accent rounded-lg hover:bg-primary/5 transition-colors"
                                         initial={{ opacity: 0, x: -20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
@@ -270,7 +267,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                            <h2 className="text-xl font-semibold mb-4 font-display">
                                 Performance Optimizations
                             </h2>
                             <div className="grid gap-3">
@@ -298,7 +295,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                            <h2 className="text-xl font-semibold mb-4 font-display">
                                 Tradeoffs & Key Decisions
                             </h2>
                             <ul className="space-y-3">
@@ -317,7 +314,7 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-4 font-['Space_Grotesk',sans-serif]">
+                            <h2 className="text-xl font-semibold mb-4 font-display">
                                 Future Enhancements
                             </h2>
                             <div className="grid md:grid-cols-2 gap-3">
@@ -344,12 +341,12 @@ export default function CaseStudy() {
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl font-semibold mb-6 font-['Space_Grotesk',sans-serif]">Impact & Metrics</h2>
+                            <h2 className="text-xl font-semibold mb-6 font-display">Impact & Metrics</h2>
                             <div className="grid md:grid-cols-2 gap-4">
                                 {caseStudy.impactMetrics.map((metric, index) => (
                                     <motion.div
                                         key={index}
-                                        className="p-4 bg-background rounded-lg border border-border cursor-pointer hover:border-primary/50 transition-colors"
+                                        className="p-4 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors"
                                         initial={{ opacity: 0, scale: 0.95 }}
                                         whileInView={{ opacity: 1, scale: 1 }}
                                         viewport={{ once: true }}
@@ -363,8 +360,9 @@ export default function CaseStudy() {
                         </motion.div>
 
                         {/* Navigation */}
-                        <motion.div
-                            className="pt-8 border-t border-border"
+                        <motion.nav
+                            aria-label="Case study navigation"
+                            className="pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
@@ -372,15 +370,28 @@ export default function CaseStudy() {
                         >
                             <Link
                                 to="/"
-                                className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all cursor-pointer"
+                                state={{ scrollTo: 'case-studies' }}
+                                className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all"
                             >
-                                <ArrowLeft className="w-4 h-4" />
+                                <ArrowLeft className="w-4 h-4" aria-hidden="true" />
                                 View All Case Studies
                             </Link>
-                        </motion.div>
+                            {next && next.id !== caseStudy.id && (
+                                <Link
+                                    to={`/case-study/${next.id}`}
+                                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground hover:gap-3 transition-all sm:text-right"
+                                >
+                                    <span>
+                                        <span className="block text-xs uppercase tracking-wider">Next case study</span>
+                                        <span className="text-foreground">{next.title}</span>
+                                    </span>
+                                    <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                                </Link>
+                            )}
+                        </motion.nav>
                     </div>
                 </div>
             </div>
-        </div>
+        </article>
     );
 }

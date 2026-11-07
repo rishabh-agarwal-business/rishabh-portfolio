@@ -1,15 +1,15 @@
 import { skills } from "@/data/data";
-import { Blocks, Code2, Database, Shield, Sparkles, Wrench, Zap } from "lucide-react"
+import { Blocks, Code2, Palette, Shield, Sparkles, Wrench, Zap, type LucideIcon } from "lucide-react"
 import { memo, useMemo, useState } from "react"
 import { SectionHeader } from "./ui/SectionHeader";
 import { AnimatePresence, motion } from "motion/react";
 import { GradientCard } from "./ui/GradientCard";
 import { GradientText } from "./ui/GradientText";
 
-const categoryIcons: Record<string, any> = {
+const categoryIcons: Record<string, LucideIcon> = {
     'Languages': Code2,
     'Frameworks & Libraries': Blocks,
-    'UI & Design Systems': Database,
+    'UI & Design Systems': Palette,
     'Architecture & Patterns': Wrench,
     'Security & Quality': Shield,
     'Tools & Infrastructure': Zap
@@ -31,9 +31,10 @@ const Skills = () => {
     }, []);
 
     return (
-        <section id="skills" className="py-20 px-6">
+        <section id="skills" aria-labelledby="skills-title" className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <SectionHeader
+                    id="skills-title"
                     title="Skills & Expertise"
                     subtitle="My technical toolkit and areas of mastery"
                 />
@@ -92,7 +93,9 @@ const SkillsSidebar = memo(function SkillsSidebar({
                 const Icon = categoryIcons[skill.category] || Code2;
                 return (
                     <motion.button
-                        key={index}
+                        key={skill.category}
+                        type="button"
+                        aria-pressed={selectedCategory === index}
                         onClick={() => onSelectCategory(index)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all cursor-pointer ${selectedCategory === index
                             ? 'bg-linear-to-r from-zinc-700/40 to-gray-700/40 border-l-2 border-zinc-500'
@@ -140,7 +143,7 @@ const SkillsContent = memo(function SkillsContent({
                     <div className="p-3 rounded-lg bg-linear-to-br from-zinc-700/40 to-gray-700/40 border border-zinc-500/50">
                         <Icon className="w-6 h-6 text-zinc-400" />
                     </div>
-                    <h3 className="text-2xl font-bold font-['Space_Grotesk',sans-serif]">
+                    <h3 className="text-2xl font-bold font-display">
                         <GradientText>
                             {skill.category}
                         </GradientText>
@@ -149,7 +152,7 @@ const SkillsContent = memo(function SkillsContent({
 
                 <div className="flex flex-wrap gap-3">
                     {skill.items.map((item, idx) => (
-                        <SkillPill key={idx} item={item} index={idx} />
+                        <SkillPill key={item} item={item} index={idx} />
                     ))}
                 </div>
 
@@ -179,7 +182,7 @@ const SkillPill = memo(function SkillPill({ item, index }: { item: string; index
             transition={{ duration: 0.3, delay: index * 0.05 }}
         >
             <div className="absolute inset-0 bg-linear-to-r from-zinc-600/20 via-gray-600/20 to-slate-600/20 rounded-lg blur-sm group-hover:blur-md transition-all opacity-0 group-hover:opacity-100"></div>
-            <div className="relative px-4 py-2 text-sm bg-accent/50 border border-border rounded-lg text-foreground hover:border-zinc-500/50 transition-all cursor-pointer backdrop-blur-sm">
+            <div className="relative px-4 py-2 text-sm bg-accent/50 border border-border rounded-lg text-foreground hover:border-zinc-500/50 transition-all backdrop-blur-sm">
                 {item}
             </div>
         </motion.div>
@@ -206,7 +209,7 @@ const SkillsMobile = memo(function SkillsMobile({
 
                 return (
                     <motion.div
-                        key={index}
+                        key={skill.category}
                         className={`border border-border rounded-lg overflow-hidden transition-all ${isOpen ? 'bg-linear-to-r from-zinc-700/20 to-gray-700/20' : 'bg-accent/30'
                             }`}
                         initial={{ opacity: 0, y: 20 }}
@@ -215,11 +218,13 @@ const SkillsMobile = memo(function SkillsMobile({
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
                         <button
+                            type="button"
+                            aria-expanded={isOpen}
                             onClick={() => onSelectCategory(index)}
                             className="w-full flex items-center gap-3 p-4 text-left"
                         >
                             <Icon className={`w-5 h-5 shrink-0 ${isOpen ? 'text-zinc-400' : 'text-muted-foreground'}`} />
-                            <span className={`text-base font-semibold font-['Space_Grotesk',sans-serif] ${isOpen ? 'text-foreground' : 'text-muted-foreground'
+                            <span className={`text-base font-semibold font-display ${isOpen ? 'text-foreground' : 'text-muted-foreground'
                                 }`}>
                                 {skill.category}
                             </span>
@@ -232,12 +237,12 @@ const SkillsMobile = memo(function SkillsMobile({
                                     animate={{ height: "auto", opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
                                     transition={{ duration: 0.3 }}
-                                    className="px-4 pb-4"
+                                    className="overflow-hidden"
                                 >
-                                    <div className="flex flex-wrap gap-2">
-                                        {skill.items.map((item, idx) => (
+                                    <div className="flex flex-wrap gap-2 px-4 pb-4">
+                                        {skill.items.map((item) => (
                                             <div
-                                                key={idx}
+                                                key={item}
                                                 className="px-3 py-1.5 text-xs bg-background/80 border border-border rounded-md text-foreground"
                                             >
                                                 {item}

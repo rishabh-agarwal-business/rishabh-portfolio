@@ -1,3 +1,17 @@
+/** Single source of truth for personal details used across the site */
+export const profile = {
+    name: 'Rishabh Agarwal',
+    title: 'Senior Frontend Engineer',
+    yearsOfExperience: '7+',
+    location: 'Rudrapur, Uttarakhand, India',
+    email: 'rishabh.developer1509@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/rishi8a69127',
+    github: 'https://github.com/rishabh-agarwal-business',
+    resume: '/Rishabh_Agarwal.pdf',
+    /** Shows the "Open to … roles" badge in the hero. Set to false to hide it. */
+    openToWork: true,
+} as const;
+
 export interface CaseStudy {
     id: string;
     title: string;
@@ -17,8 +31,8 @@ export interface CaseStudy {
     solutionsImplemented: string[];
     impactMetrics: string[];
     demoLink?: string;
-    repoLink: string;
-    packageLink: string;
+    repoLink?: string;
+    packageLink?: string;
 }
 
 export interface Experience {
@@ -28,7 +42,6 @@ export interface Experience {
     description: string;
     highlights: string[];
     remote: boolean;
-    [index: number]: any;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -275,13 +288,13 @@ export const caseStudies: CaseStudy[] = [
     }
 ];
 
-export const skills = {
-    'Languages': ['JavaScript (ES6+)', 'TypeScript', 'Python'],
-    'Frameworks & Libraries': ['React', 'Angular', 'Redux', 'Redux Toolkit', 'RxJS'],
-    'UI & Design Systems': ['Material UI', 'Bootstrap', 'Responsive Design', 'CSS-in-JS'],
-    'Architecture & Patterns': ['Modular Architecture', 'Component-Driven Development', 'State Management Patterns'],
-    'Security & Quality': ['RBAC Implementation', 'Data Encryption', 'Performance Optimization', 'Code Quality & Testing'],
-    'Tools & Infrastructure': ['Git', 'Webpack', 'npm/yarn', 'CI/CD Pipelines']
+export const skills: Record<string, string[]> = {
+    'Languages': ['JavaScript (ES6+)', 'TypeScript', 'HTML5', 'CSS3', 'SQL'],
+    'Frameworks & Libraries': ['React', 'Next.js', 'Angular', 'Redux Toolkit', 'RTK Query', 'RxJS'],
+    'UI & Design Systems': ['Tailwind CSS', 'Material UI', 'Bootstrap', 'Responsive Design', 'Accessibility (a11y)'],
+    'Architecture & Patterns': ['Modular Architecture', 'Component-Driven Development', 'State Management Patterns', 'REST APIs'],
+    'Security & Quality': ['RBAC', 'OAuth / JWT Auth', 'Jest', 'React Testing Library', 'Performance Optimization'],
+    'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Node.js / Express', 'AWS (S3, CloudFront, Lambda)', 'CI/CD Pipelines']
 };
 
 export const experience: Experience[] = [
@@ -293,9 +306,9 @@ export const experience: Experience[] = [
             "Working on the Marlo healthcare platform delivering scalable B2B2C and B2C solutions, including Patient and ECP portals.",
         highlights: [
             "Developed and enhanced the Marlo healthcare platform supporting both B2B2C and B2C models.",
-            "Built the ECP portal using React, Redux Toolkit, and Material UI, enabling scalable state management and consistent UI.",
+            "Built the ECP portal using React, Redux Toolkit, and Material UI, reducing state-management complexity by ~40% and integrating OAuth authentication.",
+            "Optimized the Patient portal using Angular and TypeScript with a modular, responsive architecture, improving page-load performance by ~30%.",
             "Improved application performance and maintainability through optimized frontend architecture.",
-            "Developed and optimized the Patient portal using Angular and TypeScript with a modular, responsive design.",
             "Collaborated with cross-functional teams to improve delivery speed and overall platform stability."
         ],
         remote: false

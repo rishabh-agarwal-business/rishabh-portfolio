@@ -32,9 +32,10 @@ export default function Architecture() {
     ];
 
     return (
-        <section className="py-20 px-6">
+        <section id="approach" aria-labelledby="approach-title" className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <SectionHeader
+                    id="approach-title"
                     title="Architecture & Engineering Approach"
                     subtitle="Core principles and methodologies that drive technical decision-making and solution design."
                     titleClassName="text-3xl md:text-4xl"
@@ -60,7 +61,7 @@ export default function Architecture() {
                                         <principle.icon className="w-6 h-6 text-zinc-400" />
                                     </motion.div>
                                     <div className="flex-1">
-                                        <h3 className="text-xl font-bold mb-2 font-['Space_Grotesk',sans-serif]">
+                                        <h3 className="text-xl font-bold mb-2 font-display">
                                             {principle.title}
                                         </h3>
                                         <p className="text-sm text-muted-foreground leading-relaxed">

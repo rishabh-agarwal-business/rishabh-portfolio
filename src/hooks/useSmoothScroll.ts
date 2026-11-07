@@ -1,46 +1,30 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import { useCallback } from 'react';
 
-const NAVBAR_HEIGHT = 80;
+const NAVBAR_OFFSET = 80;
+
+export function scrollToId(id: string, behavior: ScrollBehavior = 'smooth') {
+    const el = document.getElementById(id);
+    if (!el) return false;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const top = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+    window.scrollTo({ top: Math.max(0, top), behavior: reduceMotion ? 'instant' : behavior });
+    return true;
+}
 
 export function useSmoothScroll() {
     const navigate = useNavigate();
-    const location = useLocation();
+    const { pathname } = useLocation();
 
     const scrollToSection = useCallback((id: string) => {
-
-        const scroll = (retry = 0) => {
-            const el = document.getElementById(id);
-
-            // 🔥 Retry until lazy component mounts
-            if (!el && retry < 10) {
-                setTimeout(() => scroll(retry + 1), 100);
-                return;
-            }
-
-            if (!el) return;
-
-            const y =
-                el.getBoundingClientRect().top +
-                window.scrollY -
-                NAVBAR_HEIGHT;
-
-            window.scrollTo({
-                top: y,
-                behavior: 'smooth',
-            });
-        };
-
-        if (location.pathname !== '/') {
-            navigate('/');
-
-            // wait for route + lazy render
-            setTimeout(() => scroll(), 200);
-        } else {
-            scroll();
+        if (pathname !== '/') {
+            // ScrollManager picks this up once the home route has rendered
+            navigate('/', { state: { scrollTo: id } });
+            return;
         }
-
-    }, [navigate, location.pathname]);
+        scrollToId(id);
+    }, [navigate, pathname]);
 
     return { scrollToSection };
 }

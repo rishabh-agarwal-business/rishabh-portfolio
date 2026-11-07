@@ -1,105 +1,91 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, useMotionValue, useSpring } from 'motion/react';
+
+const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, label, summary, .cursor-hover';
+const SPRING = { stiffness: 500, damping: 28, mass: 0.5 };
+
+/** Only enable on devices with a precise pointer that hover, and when the user hasn't asked for reduced motion */
+function canUseCustomCursor() {
+    return window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches;
+}
 
 const CustomCursor = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [enabled, setEnabled] = useState(canUseCustomCursor);
     const [isHovering, setIsHovering] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    // Motion values update the DOM directly — no React re-render per mousemove
+    const x = useMotionValue(-100);
+    const y = useMotionValue(-100);
+    const ringX = useSpring(x, SPRING);
+    const ringY = useSpring(y, SPRING);
 
     useEffect(() => {
-        // Check if device is mobile
-        const checkMobile = () => {
-            setIsMobile(window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window);
-        };
-
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-
-        const updatePosition = (e: MouseEvent) => {
-            setPosition({ x: e.clientX, y: e.clientY });
-        };
-
-        const handleMouseEnter = () => setIsHovering(true);
-        const handleMouseLeave = () => setIsHovering(false);
-
-        // Add event listeners to interactive elements
-        const addHoverListeners = () => {
-            const interactiveElements = document.querySelectorAll(
-                'a, button, [role="button"], .cursor-hover, input, textarea, select, .cursor-pointer'
-            );
-
-            interactiveElements.forEach(el => {
-                el.addEventListener('mouseenter', handleMouseEnter);
-                el.addEventListener('mouseleave', handleMouseLeave);
-            });
-        };
-
-        // Initial setup
-        addHoverListeners();
-
-        // Re-add listeners when DOM changes
-        const observer = new MutationObserver(addHoverListeners);
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        window.addEventListener('mousemove', updatePosition);
-
-        return () => {
-            window.removeEventListener('mousemove', updatePosition);
-            window.removeEventListener('resize', checkMobile);
-            observer.disconnect();
-
-            const interactiveElements = document.querySelectorAll(
-                'a, button, [role="button"], .cursor-hover, input, textarea, select, .cursor-pointer'
-            );
-            interactiveElements.forEach(el => {
-                el.removeEventListener('mouseenter', handleMouseEnter);
-                el.removeEventListener('mouseleave', handleMouseLeave);
-            });
-        };
+        const mq = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+        const onChange = () => setEnabled(mq.matches);
+        mq.addEventListener('change', onChange);
+        return () => mq.removeEventListener('change', onChange);
     }, []);
 
-    // Don't render on mobile
-    if (isMobile) return null;
+    useEffect(() => {
+        if (!enabled) return;
+
+        const root = document.documentElement;
+        root.classList.add('has-custom-cursor');
+
+        const onMove = (e: MouseEvent) => {
+            x.set(e.clientX);
+            y.set(e.clientY);
+            setVisible(true);
+        };
+        // Event delegation instead of attaching listeners to every element + MutationObserver
+        const onOver = (e: MouseEvent) => {
+            const target = e.target as Element | null;
+            setIsHovering(!!target?.closest?.(INTERACTIVE));
+        };
+        const onLeave = () => setVisible(false);
+
+        window.addEventListener('mousemove', onMove, { passive: true });
+        document.addEventListener('mouseover', onOver, { passive: true });
+        document.documentElement.addEventListener('mouseleave', onLeave);
+
+        return () => {
+            root.classList.remove('has-custom-cursor');
+            window.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseover', onOver);
+            document.documentElement.removeEventListener('mouseleave', onLeave);
+        };
+    }, [enabled, x, y]);
+
+    if (!enabled) return null;
 
     return (
-        <>
-            {/* Main cursor ring */}
+        <div aria-hidden="true" className={`transition-opacity duration-200 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            {/* Ring */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none z-9999 mix-blend-difference"
-                animate={{
-                    x: position.x - 20,
-                    y: position.y - 20,
-                    scale: isHovering ? 1.5 : 1,
-                }}
-                transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 28,
-                    mass: 0.5,
-                }}
+                className="fixed top-0 left-0 pointer-events-none z-9999 mix-blend-difference -translate-x-1/2 -translate-y-1/2"
+                style={{ x: ringX, y: ringY }}
             >
-                <div className="w-10 h-10 border-2 border-white rounded-full" />
+                <motion.div
+                    className="w-10 h-10 border-2 border-white rounded-full"
+                    animate={{ scale: isHovering ? 1.5 : 1 }}
+                    transition={{ type: 'spring', ...SPRING }}
+                />
             </motion.div>
 
-            {/* Small dot in center */}
+            {/* Dot */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none z-9999 mix-blend-difference"
-                animate={{
-                    x: position.x - 2,
-                    y: position.y - 2,
-                    scale: isHovering ? 0 : 1,
-                }}
-                transition={{
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 28,
-                    mass: 0.5,
-                }}
+                className="fixed top-0 left-0 pointer-events-none z-9999 mix-blend-difference -translate-x-1/2 -translate-y-1/2"
+                style={{ x, y }}
             >
-                <div className="w-1 h-1 bg-white rounded-full" />
+                <motion.div
+                    className="w-1 h-1 bg-white rounded-full"
+                    animate={{ scale: isHovering ? 0 : 1 }}
+                    transition={{ duration: 0.15 }}
+                />
             </motion.div>
-        </>
+        </div>
     );
-}
+};
 
 export default CustomCursor;
