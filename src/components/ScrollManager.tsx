@@ -17,6 +17,12 @@ export default function ScrollManager() {
         if (target) {
             // wait one frame so the new route has rendered
             requestAnimationFrame(() => scrollToId(target, 'instant'));
+            // images/fonts can shift layout on first load; correct once everything has loaded
+            if (document.readyState !== 'complete') {
+                const onLoad = () => scrollToId(target, 'instant');
+                window.addEventListener('load', onLoad, { once: true });
+                return () => window.removeEventListener('load', onLoad);
+            }
         } else {
             window.scrollTo({ top: 0, behavior: 'instant' });
         }

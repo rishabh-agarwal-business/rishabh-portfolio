@@ -1,26 +1,30 @@
 import { useParams, Link } from 'react-router';
-import { ArrowLeft, ArrowRight, CheckCircle2, Component, Blocks, FileCode, Layers, Palette, Activity, Code2, Package, Shield, Database, Server, type LucideIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink, Activity, Blocks, CheckCircle2, Cloud, Code2, Component, CreditCard, Database, FileCode, Layers, Package, Palette, Server, Shield, Sparkles, Workflow, type LucideIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import { caseStudies, profile } from '@/data/data';
 import NotFound from './NotFound';
 import ProjectLinks from './common/ProjectLinks';
+import { GradientText } from './ui/GradientText';
+import { ArchitectureDiagram } from './ArchitectureDiagram';
 
-const techIcons: Record<string, LucideIcon> = {
-    'React': Component,
-    'Redux Toolkit': Layers,
-    'Redux': Layers,
-    'TypeScript': FileCode,
-    'Material UI': Palette,
-    'Angular': Blocks,
-    'RxJS': Activity,
-    'Custom Security Framework': Shield,
-    'Web Workers': Activity,
-    'Custom Performance Framework': Activity,
-    'JavaScript': Code2,
-    'Webpack': Package,
-    'Node.js': Server,
-    'MongoDB': Database,
-};
+const techIcons: [RegExp, LucideIcon][] = [
+    [/react flow|canvas/i, Workflow],
+    [/react/i, Component],
+    [/typescript|zod/i, FileCode],
+    [/tailwind|css|ui/i, Palette],
+    [/zustand|query|redux/i, Layers],
+    [/postgres|drizzle|sql/i, Database],
+    [/redis|bullmq|queue/i, Activity],
+    [/nest|fastify|node/i, Server],
+    [/aws|docker|caddy|cdk/i, Cloud],
+    [/claude|ai|anthropic/i, Sparkles],
+    [/razorpay|stripe/i, CreditCard],
+    [/codemirror|editor/i, Code2],
+    [/vite|webpack/i, Package],
+    [/auth|security/i, Shield],
+];
+
+const iconFor = (tech: string) => techIcons.find(([re]) => re.test(tech))?.[1] ?? Blocks;
 
 export default function CaseStudy() {
     const { id } = useParams<{ id: string }>();
@@ -60,24 +64,45 @@ export default function CaseStudy() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.1 }}
                         >
+                            <div className="flex flex-wrap items-center gap-2">
+                                {caseStudy.status && (
+                                    <span className="text-xs px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300">
+                                        {caseStudy.status}
+                                    </span>
+                                )}
+                                <span className="text-xs px-3 py-1 bg-accent rounded-full">{caseStudy.domain}</span>
+                            </div>
                             <div className="flex items-center gap-3 flex-wrap">
-                                <h1 className="text-3xl md:text-4xl font-semibold font-display">
-                                    {caseStudy.title}
+                                <h1 className="text-4xl md:text-5xl font-bold font-display">
+                                    <GradientText>{caseStudy.title}</GradientText>
                                 </h1>
                                 <ProjectLinks
-                                        projectName={caseStudy.title}
-                                        repoLink={caseStudy.repoLink}
-                                        packageLink={caseStudy.packageLink}
-                                        demoLink={caseStudy.demoLink}
-                                        size={24}
-                                    />
-                                <span className="px-3 py-1 bg-accent text-sm rounded-full">
-                                    {caseStudy.domain}
-                                </span>
+                                    projectName={caseStudy.title}
+                                    repoLink={caseStudy.repoLink}
+                                    packageLink={caseStudy.packageLink}
+                                    demoLink={caseStudy.demoLink}
+                                    size={22}
+                                />
                             </div>
+                            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">{caseStudy.tagline}</p>
+                            <p className="text-sm text-muted-foreground">
+                                <span className="text-zinc-300 font-medium">Role:</span> {caseStudy.role}
+                            </p>
+                            <p className="text-muted-foreground leading-relaxed">{caseStudy.shortDescription}</p>
+                            {caseStudy.demoLink && (
+                                <a
+                                    href={caseStudy.demoLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 text-sm font-medium text-zinc-200 hover:text-white underline-offset-4 hover:underline"
+                                >
+                                    Visit {new URL(caseStudy.demoLink).hostname}
+                                    <ExternalLink className="w-4 h-4" aria-hidden="true" />
+                                </a>
+                            )}
                             <div className="flex flex-wrap gap-2">
                                 {caseStudy.techStack.map((tech) => {
-                                    const Icon = techIcons[tech] || Code2;
+                                    const Icon = iconFor(tech);
                                     return (
                                         <span key={tech} className="px-3 py-1 bg-secondary text-sm rounded flex items-center gap-2">
                                             <Icon className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
@@ -88,31 +113,20 @@ export default function CaseStudy() {
                             </div>
                         </motion.div>
 
-                        {/* Demo Video Section */}
-                        {/* <motion.div
-                            className="space-y-4"
+                        {/* By the numbers */}
+                        <motion.dl
+                            className="grid grid-cols-2 md:grid-cols-4 gap-3"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.2 }}
                         >
-                            <h2 className="text-xl font-semibold font-display">Demo Video</h2>
-                            <div className="relative aspect-video bg-accent rounded-lg overflow-hidden border border-border group cursor-pointer">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <motion.div
-                                        className="flex flex-col items-center gap-4"
-                                        whileHover={{ scale: 1.05 }}
-                                    >
-                                        <div className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                                            <Play className="w-8 h-8 text-primary fill-primary ml-1" />
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">
-                                            Click to watch project demonstration
-                                        </p>
-                                    </motion.div>
+                            {caseStudy.highlights.map((h) => (
+                                <div key={h.label} className="flex flex-col rounded-xl border border-zinc-600/30 bg-linear-to-br from-zinc-800/40 to-zinc-900/40 p-4">
+                                    <dt className="text-xs text-muted-foreground leading-snug">{h.label}</dt>
+                                    <dd className="order-first text-2xl md:text-3xl font-bold font-display text-foreground">{h.value}</dd>
                                 </div>
-                                <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent" />
-                            </div>
-                        </motion.div> */}
+                            ))}
+                        </motion.dl>
 
                         {/* Problem Statement */}
                         <motion.div
@@ -139,6 +153,22 @@ export default function CaseStudy() {
                             <p className="text-muted-foreground leading-relaxed">
                                 {caseStudy.businessContext}
                             </p>
+                        </motion.div>
+
+                        {/* Technical Architecture */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <h2 className="text-xl font-semibold mb-4 font-display">Technical Architecture</h2>
+                            <p className="text-muted-foreground leading-relaxed mb-6">
+                                {caseStudy.technicalArchitecture}
+                            </p>
+                            <div className="rounded-xl border border-border bg-accent/40 p-5">
+                                <ArchitectureDiagram layers={caseStudy.architecture} />
+                            </div>
                         </motion.div>
 
                         {/* System Design Highlights */}
@@ -192,19 +222,6 @@ export default function CaseStudy() {
                                     </motion.div>
                                 ))}
                             </div>
-                        </motion.div>
-
-                        {/* Technical Architecture */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <h2 className="text-xl font-semibold mb-4 font-display">Technical Architecture</h2>
-                            <p className="text-muted-foreground leading-relaxed">
-                                {caseStudy.technicalArchitecture}
-                            </p>
                         </motion.div>
 
                         {/* Key Challenges */}
@@ -374,7 +391,7 @@ export default function CaseStudy() {
                                 className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all"
                             >
                                 <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-                                View All Case Studies
+                                Back to portfolio
                             </Link>
                             {next && next.id !== caseStudy.id && (
                                 <Link

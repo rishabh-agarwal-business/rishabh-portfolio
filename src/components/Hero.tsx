@@ -4,7 +4,8 @@ import { GradientText } from './ui/GradientText';
 import { GradientButton } from './ui/GradientButton';
 import { ImageWithFallback } from './ImageWithFallback';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
-import { caseStudies, experience, profile } from '@/data/data';
+import { experience, profile } from '@/data/data';
+import { Link } from 'react-router';
 import portfolio400 from '@/assets/portfolio-400.webp';
 import portfolio800 from '@/assets/portfolio-800.webp';
 
@@ -17,7 +18,7 @@ const fadeUp = (delay: number) => ({
 const stats = [
     { value: profile.yearsOfExperience, label: 'Years building for the web' },
     { value: String(experience.length), label: 'Companies, incl. Deloitte & Capgemini' },
-    { value: String(caseStudies.filter((c) => c.packageLink).length), label: 'Open-source libraries on npm' },
+    { value: 'Live', label: 'NamasteScale — a full-stack SaaS I built & launched solo' },
 ];
 
 const socials = [
@@ -165,9 +166,15 @@ const Hero = () => {
                         <span className="font-semibold text-foreground">(HIPAA, SOC 2, PCI DSS)</span>.
                     </p>
                     <p>
-                        Outside of work I build open-source frontend infrastructure — like a{' '}
-                        <span className="font-semibold text-foreground">Fenwick-tree-backed virtualization library</span>{' '}
-                        and a zero-dependency React hooks toolkit — both published on npm.
+                        Outside of work I build products end to end. Most recently I designed, built and launched{' '}
+                        <Link
+                            to="/case-study/namastescale"
+                            className="font-semibold text-foreground underline decoration-zinc-600 underline-offset-4 hover:decoration-zinc-300"
+                        >
+                            NamasteScale
+                        </Link>
+                        , a system design learning platform with AI-reviewed answers and mock interviews — React 19,
+                        NestJS, PostgreSQL and AWS.
                     </p>
                 </motion.div>
             </div>

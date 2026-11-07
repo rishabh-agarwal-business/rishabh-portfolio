@@ -10,7 +10,7 @@ import { profile } from '@/data/data';
 const navigationLinks = [
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
-    { id: 'case-studies', label: 'Case Studies' },
+    { id: 'case-studies', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
     { id: 'contact', label: 'Contact' },
 ] as const;

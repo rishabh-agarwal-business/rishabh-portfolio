@@ -12,16 +12,28 @@ export const profile = {
     openToWork: true,
 } as const;
 
+export interface ArchitectureLayer {
+    label: string;
+    items: string[];
+}
+
 export interface CaseStudy {
     id: string;
     title: string;
+    /** One-line pitch shown under the title */
+    tagline: string;
     domain: string;
+    role: string;
+    status?: string;
     techStack: string[];
+    /** Small "by the numbers" tiles; only verifiable facts */
+    highlights: { value: string; label: string }[];
     keyOutcomes: string[];
     shortDescription: string;
     problemStatement: string;
     businessContext: string;
     technicalArchitecture: string;
+    architecture: ArchitectureLayer[];
     keyChallenges: string[];
     performanceOptimizations: string[];
     failureScenariosHandled: string[];
@@ -46,246 +58,139 @@ export interface Experience {
 
 export const caseStudies: CaseStudy[] = [
     {
-        id: "react-virtual-renderer",
-        title: "react-virtual-renderer — React Library",
-        domain: "Frontend Infrastructure / Developer Tooling",
+        id: "namastescale",
+        title: "NamasteScale",
+        tagline: "A full-stack SaaS learning platform that takes engineers from junior to staff level in frontend and backend system design.",
+        domain: "EdTech SaaS · Full-stack product",
+        role: "Founder & sole engineer — product, design, frontend, backend, infrastructure",
+        status: "Live since Nov 2026",
 
         techStack: [
+            "React 19",
             "TypeScript",
-            "React",
-            "Fenwick Tree (Binary Indexed Tree)",
-            "ResizeObserver",
-            "IntersectionObserver",
-            "Node.js (test/benchmark harness)",
-            "npm",
+            "Vite",
+            "Tailwind CSS v4",
+            "TanStack Query",
+            "Zustand",
+            "React Flow",
+            "CodeMirror 6",
+            "NestJS 11 + Fastify",
+            "PostgreSQL + Drizzle",
+            "Redis + BullMQ",
+            "Zod (shared contracts)",
+            "Claude (Anthropic API / Bedrock)",
+            "Razorpay",
+            "AWS (EC2, RDS, S3, SES, CDK)",
+            "Docker + Caddy",
+        ],
+
+        highlights: [
+            { value: "120+", label: "REST endpoints, versioned under /v1" },
+            { value: "23", label: "PostgreSQL tables with versioned migrations" },
+            { value: "6", label: "AI roles: reviewer, scorer, mentor, interviewer, architecture & debugging" },
+            { value: "~80%", label: "lower launch hosting cost vs. the autoscaled stack" },
         ],
 
         keyOutcomes: [
-            "Reduced dynamic-height re-measurement cost from O(n) to O(log n), ~2000x faster in benchmarks at 50,000 items",
-            "Reduced masonry infinite-scroll append cost from O(n) to O(k) for k new items, ~667x faster at 50,000 items",
-            "Eliminated a content-overlap bug traced to five independent, compounding root causes across the measurement pipeline",
-            "Published as an installable npm package with a documented, framework-adjacent core architecture",
+            "Designed, built and launched a production SaaS end to end as a solo engineer — live at namastescale.com",
+            "AI-powered reviewer, mentor and mock interviewer that degrade to built-in rule-based engines, so learning never stops when the model is unavailable",
+            "Interactive Architecture Lab: drag-and-drop system design canvas with automated architecture review",
+            "Production-grade auth and billing: hashed opaque sessions, CSRF protection, TOTP 2FA, OAuth, signature-checked and idempotent Razorpay webhooks",
+            "Launch infrastructure at ~$35–45/month with a fully written AWS CDK path to an autoscaled multi-AZ setup",
         ],
 
         shortDescription:
-            "A React virtualization library (lists, grids, and masonry layouts) built around a Fenwick-tree-backed offset engine and an incremental layout engine, designed to stay O(log n) or better on dynamic content at scale rather than degrading as the dataset grows.",
+            "NamasteScale is a learning platform for frontend and backend system design: learning paths, a concept explorer, design and coding challenges, an architecture lab, AI-reviewed answers, AI mock interviews and an AI-assisted debugging round. I built the whole product — a React 19 web app, a NestJS API with a BullMQ worker, PostgreSQL, and the AWS infrastructure it runs on.",
 
         problemStatement:
-            "Most hand-rolled or lightly-adapted virtualization code recomputes offset/position state in full whenever any single item's measured size changes — a pattern that works fine at small scale but degrades badly exactly where virtualization is supposed to help: large, dynamic-height lists and infinite-scrolling grids. The goal was a virtualization core that stays fast as N grows, handles genuinely unpredictable content heights, and supports list, grid, and masonry layouts from the same underlying offset math.",
+            "Engineers preparing for senior and staff roles end up juggling several paid platforms — one for frontend system design, one for backend, another for mock interviews — and most of them only show a model answer. What's missing is feedback on your answer: what you missed, how it scores, and what to improve next. Interviews are also changing: companies now run AI-allowed debugging rounds, and there is almost nowhere to practise one.",
 
         businessContext:
-            "Built as a standalone open-source npm package and portfolio project, not a company product — the goal was to demonstrate library-level engineering depth (API design, algorithmic tradeoffs, published package) for senior frontend engineering roles, where 'built a CRUD app' doesn't differentiate but 'designed and shipped a performance-critical library other developers would import' does.",
+            "A bootstrapped product I run as a sole proprietor. It launches with a generous Free tier and one Pro plan (monthly, yearly or lifetime) priced by country — rupees in India and a fairer USD tier for lower-income countries — with payments through Razorpay. The goal was a product that's cheap to run at launch but doesn't need a rewrite to scale, and where every AI call is metered against the plan so costs stay predictable.",
 
         technicalArchitecture:
-            "Core offset/layout math lives in framework-agnostic TypeScript classes (FenwickTree, VirtualizationEngine, GridLayoutEngine, MeasurementSystem) with zero React imports, wrapped by a thin React adapter layer (VirtualList, VirtualGrid, useVirtualList). VirtualizationEngine delegates all offset/size bookkeeping to a Fenwick tree instead of a plain prefix-sum array. GridLayoutEngine maintains running per-column-height (masonry) or per-row-offset (dynamic grid) state and only computes positions for items it hasn't seen, rather than rebuilding the full layout on every items-array change. MeasurementSystem wraps ResizeObserver, batching all size changes from a single browser frame into one flush rather than deferring corrections to a later frame.",
+            "Two repositories. The web app is React 19 + Vite with TanStack Query for server state and Zustand for client state; components depend only on per-domain service interfaces, with HTTP adapters bound behind them, so implementations can be swapped without touching UI. The backend is an npm-workspaces monorepo: a NestJS 11 API on Fastify, a BullMQ worker for email, images, invoices and AI jobs, a Drizzle/PostgreSQL data package, and a Zod contracts package that is the single source of truth for request/response schemas, plans and pricing — copied into the web app so forms and the API validate with the same schemas. Web and API are always same-origin (/api/* routed by the proxy), so session cookies stay first-party and there is no CORS. At launch everything runs on one EC2 Graviton instance behind Caddy with RDS PostgreSQL, S3 and SES; the infra package also defines (in AWS CDK) the scale-up version: CloudFront + WAF, ECS Fargate, Aurora Serverless v2, ElastiCache and Bedrock.",
+
+        architecture: [
+            { label: "Client", items: ["React 19 SPA", "TanStack Query", "Zustand", "React Flow canvas", "CodeMirror editor"] },
+            { label: "Edge", items: ["Caddy (HTTPS, headers, caching)", "Same-origin /api routing", "CloudFront + WAF (scale-up)"] },
+            { label: "Application", items: ["NestJS 11 + Fastify API", "BullMQ worker", "Zod contracts", "Claude (Anthropic / Bedrock)"] },
+            { label: "Data & services", items: ["PostgreSQL (RDS)", "Redis", "S3", "SES", "Razorpay"] },
+        ],
 
         keyChallenges: [
-            "Making dynamic-height offset lookups fast without a full-array rebuild on every re-measurement",
-            "Avoiding O(n) masonry/grid layout recomputation when infinite scroll appends items to an already-large board",
-            "Diagnosing a multi-cause overlap bug where several independent issues (a disconnected callback wire, an explicit-height box blocking ResizeObserver, content-box vs border-box measurement, unstable ref identities, and deferred-frame corrections) each contributed to the same visible symptom",
-            "Growing a Fenwick tree's capacity after construction without invalidating prior point-update propagation — an initial naive implementation of this was provably incorrect and caught by a differential test against a naive reference array",
-            "Making infinite scroll's sentinel element reliable inside a virtualized list, where a sentinel nested in a conditionally-rendered last item may never mount in the first place",
+            "Making AI feedback reliable and affordable: per-user rate limits, plan-based allowances and model tiers, and structured outputs that the UI can render safely",
+            "Keeping the product usable when a dependency is missing — no model, no payment keys, no email provider — without branching the UI everywhere",
+            "Sharing one set of validation schemas, plans and prices between two repositories without drift",
+            "Building secure, first-party authentication (sessions, CSRF, 2FA, OAuth) without a third-party auth service",
+            "Handling payments correctly: verifying checkout signatures, processing webhooks exactly once, and applying the single best discount across sales, coupons and referrals",
+            "Shipping on a tight launch date while still leaving a clean path from one server to an autoscaled cloud setup",
         ],
 
         performanceOptimizations: [
-            "Fenwick tree (Binary Indexed Tree) for O(log n) point updates, prefix-sum offset queries, and offset-to-index lookups, replacing an O(n) rebuild-on-write prefix-sum array",
-            "Amortized-doubling capacity growth for the Fenwick tree (power-of-two capacity, full rebuild only on doubling events) instead of per-item growth that would have required O(n) work on every append",
-            "Incremental append-only masonry/grid layout engine (GridLayoutEngine) that reuses prior position calculations instead of recomputing the full layout on every items-array change",
-            "O(1) fast path for fixed-row-height grid layout — direct index arithmetic with zero array allocation, bypassing the general incremental engine entirely for the most common grid configuration",
-            "Binary-search visible-range lookup for masonry/dynamic-height grids, replacing a two-pass O(n) linear scan",
-            "IntersectionObserver-based infinite scroll instead of a scroll-event listener reading scrollTop/scrollHeight/clientHeight on every event, removing forced synchronous layout reads from the scroll hot path",
-            "Synchronous (flushSync-wrapped) measurement correction instead of deferring through an extra manual requestAnimationFrame layered on top of ResizeObserver's own per-frame batching, closing a one-frame visible-overlap window",
+            "Server state cached and deduplicated with TanStack Query; client state read through narrow Zustand selectors to avoid unnecessary re-renders",
+            "React Compiler enabled for automatic memoization across the app",
+            "Sessions hashed in PostgreSQL and cached in Redis, so authenticated requests don't hit the database on every call",
+            "Slow work (emails, image processing, invoices, AI jobs) moved off the request path into a BullMQ worker",
+            "Hashed static assets cached for a year at the edge, with index.html revalidated on every deploy",
+            "Cheaper, faster model tier on Free and the advanced tier on Pro, chosen per request by the plan service",
         ],
 
         failureScenariosHandled: [
-            "Off-screen (unmounted) items retaining a stale pre-resize height indefinitely after the container's width changes, since ResizeObserver only reports on currently-mounted elements — fixed via debounced full invalidation on cross-axis size change",
-            "Fenwick tree capacity growth silently under-counting totals when naive point-updates were bounded by the tree's size at the time of the update rather than its final size — caught by a differential test against a naive array before shipping",
-            "Sentinel element for infinite scroll never mounting because it was nested inside a conditionally-rendered last virtualized item — fixed with an always-mounted `footer` slot independent of virtualization",
-            "Measurement callback silently discarding every result because the wiring that sets the internal `onMeasure` callback was commented out — traced as the root cause of dynamic heights never updating past their initial estimate",
-            "Ref-callback identity churn causing every visible item to be unobserved and re-observed on every scroll frame, from a per-render inline closure instead of a stable per-index cached callback",
-            "AbortController cleanup that was constructed but never actually invoked, since the calling hook discarded the cleanup closure a loader function returned",
+            "AI unavailable or allowance used up → the web app falls back to built-in rule-based reviewer, mentor and interviewer engines",
+            "Model call fails → the request returns a clear, retryable error and the learner is never charged usage for it",
+            "Duplicate or replayed Razorpay webhooks → signature-checked and de-duplicated by event id (idempotent)",
+            "Concurrent deploys running migrations → serialised with a Postgres advisory lock; migrations are kept backwards compatible",
+            "Unhealthy release on the scale-up stack → ECS deployment circuit breaker rolls back automatically",
+            "Misconfigured environment → every variable is validated at startup and the process refuses to start with a list of what's missing",
+            "Guest progress at sign-in → uploaded once and its XP recomputed on the server, so clients can't award themselves XP",
         ],
 
         systemDesignHighlights: [
-            "Framework-agnostic core (FenwickTree, VirtualizationEngine, GridLayoutEngine) with no React imports, architected so a Vue/Svelte adapter could reuse the same engines without modification",
-            "Separation between the 'fast path' (fixed-size grid, pure arithmetic, no data structure) and the 'general path' (masonry/dynamic sizing, incremental engine + binary search) rather than forcing every layout mode through one general algorithm",
-            "Injectable synchronous-flush hook (`setFlush`) in MeasurementSystem, letting the framework adapter supply React's flushSync without the core class needing to import react-dom",
-            "Accessibility built into the component layer (ARIA live-region range announcements, roving-tabindex keyboard navigation, correct list/grid ARIA semantics) rather than treated as an afterthought layered on top",
+            "Dependency inversion in the web app: components import a domain service interface; swapping an implementation is a one-line binding change",
+            "Open/closed content model: frontend/backend challenge differences, lesson kinds and architecture-review rules are data tables, not if/else chains",
+            "Contracts package as the single source of truth for schemas, plans, limits and pricing across API, worker and web",
+            "Uniform API conventions: everything under /v1, one error shape with a request id, money stored in paise, UUIDv7 ids, timestamptz everywhere",
+            "Admin CMS backed by Postgres with drafts, publishing and version restore; database seeds never overwrite admin edits",
+            "First-party, cookie-less analytics that honours Do Not Track",
         ],
 
         tradeoffsAndDecisions: [
-            "Chose a Fenwick tree over a segment tree or a naive array: O(log n) for both point updates and prefix queries with a much smaller constant factor and simpler implementation than a full segment tree, at the cost of not supporting range updates (not needed here, since only single-item measurements are ever recorded)",
-            "Accepted that masonry's binary-search visible-range lookup is an approximation, not pixel-exact, since masonry's y-position isn't strictly monotonic in index order — mitigated with widened overscan rather than solved exactly, since an exact solution would require abandoning index-ordered virtualization entirely",
-            "Chose to make all ResizeObserver-triggered corrections flushSync-synchronous, trading a small amount of scroll-performance headroom for eliminating a visible overlap window — considered the right tradeoff since it only fires when content genuinely resizes, not on every scroll frame",
-            "Kept the default CSS deliberately minimal (box-sizing and scrollbar hygiene only) rather than shipping opinionated styling, so the library layers under any existing design system without a specificity fight",
+            "Launched on a single EC2 server (~$35–45/month) instead of the autoscaled ECS/Aurora stack (~$200+/month) — accepted less redundancy at launch in exchange for ~80% lower cost, with the full CDK stack ready for when traffic needs it",
+            "Opaque server-side sessions in httpOnly cookies over JWTs — easy revocation and per-device session management, at the cost of a Redis/DB lookup (mitigated by caching)",
+            "Same-origin API instead of a separate API domain — no CORS and first-party cookies, at the cost of routing rules at the edge",
+            "Two repositories with a synced contracts copy instead of one monorepo — independent deploys for web and API, with a sync script to prevent schema drift",
+            "XP and plan state decided only by the server — more backend work, but impossible to cheat from the client",
         ],
 
         futureEnhancements: [
-            "Split into @virtualize/core (framework-agnostic) and @virtualize/react packages, with the door open for Vue/Svelte adapters reusing the same engines",
-            "Publish a reproducible, public benchmark suite comparing against react-window, react-virtuoso, and TanStack Virtual on identical workloads",
-            "Bidirectional infinite scroll with scroll-anchor preservation for chat/feed-style prepend-above-viewport loading",
-            "Sticky group headers integrated with the virtualization offset math for section-list UIs",
-            "SSR-safe initial render of the first visible window to avoid client-hydration layout shift",
+            "Move to the autoscaled AWS stack (CloudFront, ECS Fargate, Aurora Serverless v2) as traffic grows",
+            "Turn on Razorpay live payments for the Pro plan",
+            "Team dashboard for companies to track engineers' progress",
+            "Companion YouTube channel with animated system-design videos and Shorts",
+            "Community features and leaderboards",
         ],
 
         solutionsImplemented: [
-            "FenwickTree core primitive with amortized-doubling capacity growth, differentially tested against a naive reference array (5,000 random re-measurements, chunked incremental append, shrink/regrow, multi-doubling growth)",
-            "GridLayoutEngine for incremental masonry and dynamic-row-height grid layout, verified against a fresh full rebuild for both modes",
-            "VirtualList and VirtualGrid React components with a unified container/inner/item styling API (default classes merged with consumer-supplied classes and styles, geometry-critical style properties always protected from accidental override)",
-            "useInfiniteScroll hook rewritten around IntersectionObserver with a sentinel-ref pattern",
-            "Root-cause fixes across the dynamic-height measurement pipeline: reconnected the disconnected onMeasure callback wiring, removed the explicit-height constraint that prevented ResizeObserver from detecting content growth, switched from content-box to border-box measurement, stabilized ref-callback identity, and replaced deferred RAF-based correction with synchronous flushSync-based correction",
+            "AI service pipeline: rate limit → plan allowance (also picks the model tier) → model call with schema-validated JSON → usage recorded in cost-weighted units only on success",
+            "AI reviewer that scores system design answers against a weighted rubric and shows a suggested answer on demand",
+            "AI mock interviewer with follow-up questions, scored once at the end of the session",
+            "AI-assisted debugging round modelled on AI-allowed interviews: find bugs in a codebase with limited AI help, judged on results and prompt quality",
+            "Architecture Lab built on React Flow with a rule-based architecture review",
+            "Account security: password change, TOTP 2FA (required for admins in production), session list and revoke, OAuth connect/disconnect, data export and account deletion",
+            "Growth engine: festival sales, coupon codes and referral rewards, with the server always applying the single best discount",
+            "Two deploy paths: a one-command EC2 deploy script with instant website rollback, and a GitHub Actions + AWS CDK pipeline for the scale-up stack",
         ],
 
         impactMetrics: [
-            "~2000x reduction in re-measurement cost for a 50,000-item dynamic-height list under 2,000 simulated re-measurements (3313ms -> 1.6ms, measured via Node benchmark)",
-            "~667x reduction in masonry layout cost when infinite-scroll appending to a 50,000-item board in chunks of 20 (4279ms -> 6.4ms, measured via Node benchmark)",
-            "Zero correctness regressions across 8 differential test cases run against naive reference implementations (FenwickTree and GridLayoutEngine test suites)",
-            "One critical correctness bug (Fenwick tree capacity growth) caught and fixed before release via differential testing rather than shipped and discovered in production",
+            "Launched to production at namastescale.com in November 2026",
+            "120+ REST endpoints and 23 database tables behind a single, consistent API contract",
+            "~80% lower launch hosting cost (~$35–45/month vs ~$200+/month) without giving up a path to scale",
+            "AI features stay usable at zero model cost through rule-based fallbacks",
         ],
-        demoLink: "https://react-virtual-renderer.vercel.app/",
-        repoLink: "https://github.com/rishabh-agarwal-business/virtualize",
-        packageLink: "https://www.npmjs.com/package/react-virtual-renderer"
+
+        demoLink: "https://namastescale.com",
     },
-    {
-        "id": "use-toolkit",
-        "title": "use-toolkit: React Hooks Library",
-        "domain": "Frontend Engineering / Open Source Systems Design",
-        "techStack": [
-            "React 18+",
-            "TypeScript 5+ (strict mode)",
-            "Jest 29+",
-            "React Testing Library 14+",
-            "tsup (ESM + CJS bundling)",
-            "WebSocket API",
-            "AbortController API",
-            "IndexedDB",
-            "localStorage",
-            "Intersection Observer API",
-            "Network Information API",
-            "requestIdleCallback",
-            "Node.js 18+",
-            "npm",
-            "GitHub Actions",
-            "ESLint + Prettier"
-        ],
-        "keyOutcomes": [
-            "Built a production-grade React Hooks library with zero dependencies and ~15KB gzipped bundle",
-            "Engineered advanced data layer (useQueryLite) with request deduplication, stale-while-revalidate, and intelligent caching",
-            "Reduced duplicate API calls by 60–80% using in-flight request tracking and cache reuse",
-            "Implemented resilient retry system with exponential backoff and jitter preventing thundering herd issues",
-            "Achieved 85%+ test coverage with 150+ test cases covering async hooks, browser APIs, and edge cases",
-            "Designed offline-first architecture with message queueing, local persistence, and deterministic recovery",
-            "Delivered 12 hooks, 12 demos, and 9 real-world applications (E-commerce, Chat, Dashboard, PWA, etc.)",
-            "Reduced bundle size by ~67% compared to React Query while preserving core capabilities",
-            "Enabled cross-tab synchronization and zero data loss across refresh, offline, and reconnection scenarios",
-            "Published enterprise-grade documentation including deep internals, system design, and implementation patterns"
-        ],
-        "shortDescription": "Engineered a production-grade React Hooks library solving real-world frontend problems—data fetching with caching & deduplication, resilient WebSocket communication with auto-reconnection, offline-first storage, advanced state management (undo/redo, state machines), and performance optimization (virtualization, lazy loading). Built with zero dependencies, strict TypeScript, 85%+ test coverage, and deep system design principles including SWR, exponential backoff, and cross-tab synchronization.",
-        "problemStatement": "Modern React applications require multiple specialized libraries (React Query, Redux, WebSocket wrappers, storage utilities), leading to increased bundle size, complexity, and maintenance overhead. Existing solutions are either too simplistic (lacking caching, retries, offline support) or overly complex and heavy. There is a gap for a lightweight, production-ready solution that integrates core frontend patterns—data fetching, real-time communication, persistence, and performance—without requiring providers or complex setup.",
-        "businessContext": "Designed for startups, indie developers, and performance-sensitive applications needing fast iteration and minimal dependencies. Ideal for MVPs, dashboards, real-time apps, and PWAs where bundle size and simplicity are critical. Addresses pain points like slow load times, duplicated network requests, lack of offline support, and fragmented tooling. Applicable to millions of React developers seeking a lightweight alternative to enterprise-heavy frameworks.",
-        "technicalArchitecture": "Built as a modular, hook-based system using strict TypeScript with zero external dependencies. Core architecture includes: (1) Data Layer with global cache, in-flight request deduplication, stale-while-revalidate strategy, and retry engine; (2) Real-Time Layer with WebSocket state machine, auto-reconnect, heartbeat detection, and message queueing; (3) State Layer using past/present/future model for undo/redo and finite state machines; (4) Storage Layer with localStorage TTL + cross-tab sync and IndexedDB abstraction; (5) Performance Layer with Intersection Observer, virtualization, and idle task scheduling. Uses tsup for dual ESM/CJS builds and fully tree-shakeable exports.",
-        "keyChallenges": [
-            "Designing request deduplication system using shared Promise references to eliminate redundant network calls",
-            "Implementing stale-while-revalidate pattern balancing UX responsiveness with data freshness",
-            "Building retry logic with exponential backoff + jitter to prevent coordinated retry spikes",
-            "Preventing memory leaks using AbortController and lifecycle-safe cleanup across async hooks",
-            "Handling WebSocket reconnection with state machine design and exponential retry strategies",
-            "Ensuring no message loss via offline-safe queueing before connection establishment",
-            "Managing cross-tab synchronization using storage events without infinite loops",
-            "Designing undo/redo with past-present-future stacks and bounded memory usage",
-            "Handling browser API inconsistencies (Network API, IndexedDB, Intersection Observer)",
-            "Maintaining full TypeScript inference across generic hooks without sacrificing usability",
-            "Testing hooks dependent on browser APIs with robust mocking strategies",
-            "Balancing feature richness with strict bundle size constraints (~15KB target)"
-        ],
-        "performanceOptimizations": [
-            "Implemented in-flight request deduplication reducing duplicate API calls by up to 80%",
-            "Used stale-while-revalidate to provide instant UI with background data refresh",
-            "Applied exponential backoff with jitter preventing server overload during retries",
-            "Stored cache outside React state minimizing unnecessary re-renders",
-            "Optimized WebSocket message handling using queue + batch processing",
-            "Used lazy loading via Intersection Observer reducing initial load time",
-            "Implemented virtualization supporting 10,000+ items with constant render cost",
-            "Deferred non-critical work using requestIdleCallback avoiding UI blocking",
-            "Applied TTL-based cache eviction preventing memory bloat",
-            "Optimized storage reads with on-demand expiration checks instead of polling",
-            "Minimized object allocations using structural sharing patterns",
-            "Enabled tree-shaking ensuring only used hooks are included in bundle"
-        ],
-        "failureScenariosHandled": [
-            "Network failures handled via retry with exponential backoff and capped delays",
-            "Component unmount during fetch prevented using AbortController cancellation",
-            "Offline WebSocket sends preserved using message queue and replay on reconnect",
-            "Zombie WebSocket connections detected using heartbeat mechanism",
-            "Cross-tab data inconsistency resolved via storage event synchronization",
-            "Stale cache handled via TTL expiration and background revalidation",
-            "Undo/redo inconsistencies resolved by clearing future state on new edits",
-            "IndexedDB/storage quota issues handled with graceful fallback strategies",
-            "Slow network conditions handled via adaptive logic (low-quality assets)",
-            "Race conditions in concurrent requests prevented using shared promise registry",
-            "Browser API absence handled via progressive enhancement and fallbacks",
-            "Memory leaks prevented via cleanup of timers, listeners, and async tasks"
-        ],
-        "systemDesignHighlights": [
-            "Global cache system with request deduplication and stale-while-revalidate strategy",
-            "Event-driven architecture enabling decoupled hook composition",
-            "Offline-first design with deterministic recovery and replay mechanisms",
-            "WebSocket lifecycle managed via finite state machine (connect → reconnect → stable)",
-            "Cross-tab synchronization using browser storage events",
-            "Exponential backoff with jitter preventing coordinated retry storms",
-            "Separation of concerns between data fetching, state, and UI layers",
-            "Tree-shakeable modular architecture reducing bundle footprint",
-            "Composable hooks enabling flexible integration patterns",
-            "Performance-first design minimizing re-renders and blocking operations"
-        ],
-        "tradeoffsAndDecisions": [
-            "Chose lightweight custom solution over React Query to reduce bundle size and complexity",
-            "Implemented explicit cache invalidation instead of automatic dependency tracking for predictability",
-            "Used localStorage for simplicity over IndexedDB for smaller datasets (with future extensibility)",
-            "Prioritized simplicity and composability over feature-heavy abstractions",
-            "Avoided provider-based architecture reducing setup overhead",
-            "Focused on client-side resilience instead of server-heavy solutions",
-            "Implemented manual retry strategy instead of relying on external libraries",
-            "Designed hooks to be independent enabling selective usage and tree-shaking"
-        ],
-        "futureEnhancements": [
-            "useStateMachine for complex UI workflows",
-            "useIndexedDB for large-scale offline storage",
-            "useVirtualizedList for high-performance rendering",
-            "useIdleCallback for background processing",
-            "DevTools extension for debugging cache and renders",
-            "Plugin system for extensibility",
-            "Advanced analytics and performance monitoring",
-            "CRDT-based real-time sync for collaborative apps"
-        ],
-        "solutionsImplemented": [
-            "useQueryLite: Data fetching with caching, request deduplication, SWR, retry logic, and AbortController support",
-            "useMutationLite: Mutations with optimistic updates, cache invalidation, and lifecycle callbacks",
-            "useWebSocketAdvanced: Real-time communication with auto-reconnect, backoff, heartbeat, and message queue",
-            "useNetworkState: Network quality detection with adaptive behavior support",
-            "useUndoRedo: State history using past/present/future stack model",
-            "useLocalStorageSync: Cross-tab persistent storage with TTL and sync events",
-            "useIntersectionObserverAdvanced: Lazy loading and visibility detection",
-            "useRenderTracker: Performance debugging with render analysis",
-            "useIndexedDB: Store notes locally, sync to server",
-            "useVirtualizedList: Render large lists efficiently",
-            "useIdleCallback: Background tasks"
-        ],
-        "impactMetrics": [
-            "Reduced redundant API calls by up to 80% via request deduplication",
-            "Improved perceived performance using instant cache-first rendering",
-            "Maintained ~15KB gzipped bundle size with zero dependencies",
-            "Achieved 85%+ test coverage ensuring reliability across edge cases",
-            "Enabled offline-safe operations with zero message/data loss",
-            "Supported scalable UI patterns handling 10,000+ items efficiently",
-            "Provided production-ready hooks usable independently or combined",
-            "Delivered comprehensive documentation covering internals and real-world usage",
-            "Improved developer productivity by eliminating need for multiple libraries",
-            "Ensured cross-browser compatibility with graceful degradation strategies"
-        ],
-        repoLink: "https://github.com/rishabh-agarwal-business/use-toolkit",
-        packageLink: "https://www.npmjs.com/package/@use-toolkit/core"
-    }
 ];
 
 export const skills: Record<string, string[]> = {
@@ -294,7 +199,7 @@ export const skills: Record<string, string[]> = {
     'UI & Design Systems': ['Tailwind CSS', 'Material UI', 'Bootstrap', 'Responsive Design', 'Accessibility (a11y)'],
     'Architecture & Patterns': ['Modular Architecture', 'Component-Driven Development', 'State Management Patterns', 'REST APIs'],
     'Security & Quality': ['RBAC', 'OAuth / JWT Auth', 'Jest', 'React Testing Library', 'Performance Optimization'],
-    'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Node.js / Express', 'AWS (S3, CloudFront, Lambda)', 'CI/CD Pipelines']
+    'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Node.js / Express', 'NestJS', 'PostgreSQL', 'Redis / BullMQ', 'AWS (S3, CloudFront, Lambda)', 'CI/CD Pipelines']
 };
 
 export const experience: Experience[] = [
