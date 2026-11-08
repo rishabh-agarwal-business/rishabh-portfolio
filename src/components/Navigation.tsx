@@ -4,7 +4,7 @@ import { Download, Menu, X } from 'lucide-react';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { ImageWithFallback } from './ImageWithFallback';
-import avatarImg from '@/assets/portfolio-400.webp';
+import avatarImg from '@/assets/avatar-256.webp';
 import { profile } from '@/data/data';
 
 const navigationLinks = [

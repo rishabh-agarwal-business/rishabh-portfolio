@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 
-const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, label, summary, .cursor-hover';
+const INTERACTIVE = 'a, button, [role="button"], input, textarea, select, label, summary';
 const SPRING = { stiffness: 500, damping: 28, mass: 0.5 };
 
 /** Only enable on devices with a precise pointer that hover, and when the user hasn't asked for reduced motion */

@@ -4,7 +4,7 @@ import { GradientText } from './ui/GradientText';
 
 export default function NotFound() {
     return (
-        <section className="min-h-[70vh] flex items-center justify-center px-6 pt-24">
+        <section data-scene="scatter" className="min-h-[70vh] flex items-center justify-center px-6 pt-24">
             <title>Page not found — Rishabh Agarwal</title>
             <div className="text-center space-y-4">
                 <p className="text-sm text-muted-foreground tracking-widest uppercase">404</p>

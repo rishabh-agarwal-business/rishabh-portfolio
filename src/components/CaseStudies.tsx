@@ -1,15 +1,16 @@
 import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle2, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ExternalLink, Sparkles, Youtube } from 'lucide-react';
 import { Link } from 'react-router';
 import { SectionHeader } from './ui/SectionHeader';
 import { GradientText } from './ui/GradientText';
 import { GradientButton } from './ui/GradientButton';
 import { ArchitectureDiagram } from './ArchitectureDiagram';
+import { Spotlight } from './fx/Spotlight';
 import { caseStudies, type CaseStudy } from '@/data/data';
 
 export default function CaseStudies() {
     return (
-        <section id="case-studies" aria-labelledby="case-studies-title" className="py-20 px-6">
+        <section id="case-studies" data-scene="layers" aria-labelledby="case-studies-title" className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <SectionHeader
                     id="case-studies-title"
@@ -33,12 +34,12 @@ function FeaturedProject({ project }: { project: CaseStudy }) {
     return (
         <motion.article
             aria-labelledby={`${project.id}-title`}
-            className="relative overflow-hidden rounded-2xl border border-zinc-600/30 bg-linear-to-br from-zinc-800/40 via-zinc-900/40 to-zinc-950/60 p-6 md:p-10"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
+          <Spotlight className="overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-zinc-800/35 via-zinc-900/45 to-zinc-950/60 backdrop-blur-sm p-6 md:p-10">
             {/* soft glow */}
             <div
                 aria-hidden="true"
@@ -86,7 +87,7 @@ function FeaturedProject({ project }: { project: CaseStudy }) {
                         ))}
                     </ul>
 
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                    <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 pt-2">
                         <Link to={`/case-study/${project.id}`} className="group/btn inline-block rounded-lg">
                             <GradientButton as="span">
                                 <span>Read the case study</span>
@@ -103,6 +104,19 @@ function FeaturedProject({ project }: { project: CaseStudy }) {
                                 icon={<ExternalLink className="w-4 h-4" aria-hidden="true" />}
                             >
                                 Visit {new URL(project.demoLink).hostname}
+                            </GradientButton>
+                        )}
+                        {project.youtubeLink && (
+                            <GradientButton
+                                as="a"
+                                href={project.youtubeLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                variant="outline"
+                                icon={<Youtube className="w-4 h-4" aria-hidden="true" />}
+                                iconPosition="left"
+                            >
+                                YouTube
                             </GradientButton>
                         )}
                     </div>
@@ -143,6 +157,7 @@ function FeaturedProject({ project }: { project: CaseStudy }) {
                     ))}
                 </ul>
             </div>
+          </Spotlight>
         </motion.article>
     );
 }

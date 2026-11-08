@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 type Variant = 'primary' | 'secondary' | 'outline';
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-    primary: 'bg-linear-to-r from-zinc-600 to-gray-700 text-white hover:shadow-lg hover:shadow-zinc-600/30',
+    primary: 'bg-linear-to-r from-indigo-500 via-violet-500 to-indigo-500 bg-[length:200%_100%] hover:bg-[position:100%_0] text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-[background-position,box-shadow] duration-500',
     secondary: 'bg-linear-to-r from-zinc-700/40 to-gray-700/40 text-foreground border border-zinc-500/50',
     outline: 'border-2 border-border hover:bg-accent hover:border-zinc-500/50',
 };
@@ -28,7 +28,7 @@ type AnchorProps = CommonProps & { as: 'a' } & Omit<AnchorHTMLAttributes<HTMLAnc
 /** Visual-only: use inside an existing <a>/<Link> to avoid nesting interactive elements */
 type SpanProps = CommonProps & { as: 'span' };
 
-export type GradientButtonProps = ButtonProps | AnchorProps | SpanProps;
+type GradientButtonProps = ButtonProps | AnchorProps | SpanProps;
 
 const hoverProps = {
     whileHover: { scale: 1.04 },

@@ -43,8 +43,8 @@ export interface CaseStudy {
     solutionsImplemented: string[];
     impactMetrics: string[];
     demoLink?: string;
+    youtubeLink?: string;
     repoLink?: string;
-    packageLink?: string;
 }
 
 export interface Experience {
@@ -79,14 +79,18 @@ export const caseStudies: CaseStudy[] = [
             "Redis + BullMQ",
             "Zod (shared contracts)",
             "Claude (Anthropic API / Bedrock)",
+            "OAuth / OIDC (Google, GitHub)",
             "Razorpay",
             "AWS (EC2, RDS, S3, SES, CDK)",
+            "Cloudflare CDN",
             "Docker + Caddy",
+            "Vitest",
+            "GitHub Actions",
         ],
 
         highlights: [
             { value: "120+", label: "REST endpoints, versioned under /v1" },
-            { value: "23", label: "PostgreSQL tables with versioned migrations" },
+            { value: "30+", label: "PostgreSQL tables with versioned migrations" },
             { value: "6", label: "AI roles: reviewer, scorer, mentor, interviewer, architecture & debugging" },
             { value: "~80%", label: "lower launch hosting cost vs. the autoscaled stack" },
         ],
@@ -96,7 +100,8 @@ export const caseStudies: CaseStudy[] = [
             "AI-powered reviewer, mentor and mock interviewer that degrade to built-in rule-based engines, so learning never stops when the model is unavailable",
             "Interactive Architecture Lab: drag-and-drop system design canvas with automated architecture review",
             "Production-grade auth and billing: hashed opaque sessions, CSRF protection, TOTP 2FA, OAuth, signature-checked and idempotent Razorpay webhooks",
-            "Launch infrastructure at ~$35–45/month with a fully written AWS CDK path to an autoscaled multi-AZ setup",
+            "Structured system design practice: every question follows RADIO (+ estimates) for frontend or a 7-step framework for backend, with a guided walkthrough",
+            "Launch infrastructure at ~$35–45/month behind Cloudflare's CDN, with a fully written AWS CDK path to an autoscaled multi-AZ setup",
         ],
 
         shortDescription:
@@ -113,7 +118,7 @@ export const caseStudies: CaseStudy[] = [
 
         architecture: [
             { label: "Client", items: ["React 19 SPA", "TanStack Query", "Zustand", "React Flow canvas", "CodeMirror editor"] },
-            { label: "Edge", items: ["Caddy (HTTPS, headers, caching)", "Same-origin /api routing", "CloudFront + WAF (scale-up)"] },
+            { label: "Edge", items: ["Cloudflare CDN", "Caddy (HTTPS, headers, caching)", "Same-origin /api routing", "CloudFront + WAF (scale-up)"] },
             { label: "Application", items: ["NestJS 11 + Fastify API", "BullMQ worker", "Zod contracts", "Claude (Anthropic / Bedrock)"] },
             { label: "Data & services", items: ["PostgreSQL (RDS)", "Redis", "S3", "SES", "Razorpay"] },
         ],
@@ -122,7 +127,7 @@ export const caseStudies: CaseStudy[] = [
             "Making AI feedback reliable and affordable: per-user rate limits, plan-based allowances and model tiers, and structured outputs that the UI can render safely",
             "Keeping the product usable when a dependency is missing — no model, no payment keys, no email provider — without branching the UI everywhere",
             "Sharing one set of validation schemas, plans and prices between two repositories without drift",
-            "Building secure, first-party authentication (sessions, CSRF, 2FA, OAuth) without a third-party auth service",
+            "Building secure, first-party authentication (sessions, CSRF, 2FA, Google/GitHub OAuth, one active device per account) without a third-party auth service",
             "Handling payments correctly: verifying checkout signatures, processing webhooks exactly once, and applying the single best discount across sales, coupons and referrals",
             "Shipping on a tight launch date while still leaving a clean path from one server to an autoscaled cloud setup",
         ],
@@ -131,6 +136,7 @@ export const caseStudies: CaseStudy[] = [
             "Server state cached and deduplicated with TanStack Query; client state read through narrow Zustand selectors to avoid unnecessary re-renders",
             "React Compiler enabled for automatic memoization across the app",
             "Sessions hashed in PostgreSQL and cached in Redis, so authenticated requests don't hit the database on every call",
+            "Static assets served from Cloudflare's edge cache worldwide; the origin trusts only Cloudflare's IP ranges and reads the real visitor IP",
             "Slow work (emails, image processing, invoices, AI jobs) moved off the request path into a BullMQ worker",
             "Hashed static assets cached for a year at the edge, with index.html revalidated on every deploy",
             "Cheaper, faster model tier on Free and the advanced tier on Pro, chosen per request by the plan service",
@@ -144,6 +150,8 @@ export const caseStudies: CaseStudy[] = [
             "Unhealthy release on the scale-up stack → ECS deployment circuit breaker rolls back automatically",
             "Misconfigured environment → every variable is validated at startup and the process refuses to start with a list of what's missing",
             "Guest progress at sign-in → uploaded once and its XP recomputed on the server, so clients can't award themselves XP",
+            "Signing in on a new device → the previous session is revoked, so one account is active on one device at a time",
+            "Payment confirmed by Razorpay but the browser closed before confirming → the webhook still activates the plan",
         ],
 
         systemDesignHighlights: [
@@ -166,8 +174,8 @@ export const caseStudies: CaseStudy[] = [
         futureEnhancements: [
             "Move to the autoscaled AWS stack (CloudFront, ECS Fargate, Aurora Serverless v2) as traffic grows",
             "Turn on Razorpay live payments for the Pro plan",
-            "Team dashboard for companies to track engineers' progress",
-            "Companion YouTube channel with animated system-design videos and Shorts",
+            "Grow the companion @namastescale YouTube channel with animated system-design videos and Shorts",
+            "AI help chatbot inside the app (currently shown as coming soon)",
             "Community features and leaderboards",
         ],
 
@@ -176,6 +184,8 @@ export const caseStudies: CaseStudy[] = [
             "AI reviewer that scores system design answers against a weighted rubric and shows a suggested answer on demand",
             "AI mock interviewer with follow-up questions, scored once at the end of the session",
             "AI-assisted debugging round modelled on AI-allowed interviews: find bugs in a codebase with limited AI help, judged on results and prompt quality",
+            "Step-based system design content: RADIO + estimates for frontend, a 7-step framework for backend, with a walkthrough tab for every question",
+            "Sign in with Google or GitHub (OpenID Connect), one account per email",
             "Architecture Lab built on React Flow with a rule-based architecture review",
             "Account security: password change, TOTP 2FA (required for admins in production), session list and revoke, OAuth connect/disconnect, data export and account deletion",
             "Growth engine: festival sales, coupon codes and referral rewards, with the server always applying the single best discount",
@@ -184,22 +194,24 @@ export const caseStudies: CaseStudy[] = [
 
         impactMetrics: [
             "Launched to production at namastescale.com in November 2026",
-            "120+ REST endpoints and 23 database tables behind a single, consistent API contract",
+            "120+ REST endpoints and 30+ database tables behind a single, consistent API contract",
             "~80% lower launch hosting cost (~$35–45/month vs ~$200+/month) without giving up a path to scale",
             "AI features stay usable at zero model cost through rule-based fallbacks",
         ],
 
         demoLink: "https://namastescale.com",
+        youtubeLink: "https://www.youtube.com/@namastescale",
     },
 ];
 
 export const skills: Record<string, string[]> = {
     'Languages': ['JavaScript (ES6+)', 'TypeScript', 'HTML5', 'CSS3', 'SQL'],
-    'Frameworks & Libraries': ['React', 'Next.js', 'Angular', 'Redux Toolkit', 'RTK Query', 'RxJS'],
+    'Frameworks & Libraries': ['React 19', 'Next.js', 'Angular', 'Redux Toolkit', 'RTK Query', 'TanStack Query', 'Zustand', 'RxJS', 'React Flow', 'three.js'],
     'UI & Design Systems': ['Tailwind CSS', 'Material UI', 'Bootstrap', 'Responsive Design', 'Accessibility (a11y)'],
-    'Architecture & Patterns': ['Modular Architecture', 'Component-Driven Development', 'State Management Patterns', 'REST APIs'],
-    'Security & Quality': ['RBAC', 'OAuth / JWT Auth', 'Jest', 'React Testing Library', 'Performance Optimization'],
-    'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Node.js / Express', 'NestJS', 'PostgreSQL', 'Redis / BullMQ', 'AWS (S3, CloudFront, Lambda)', 'CI/CD Pipelines']
+    'Architecture & Patterns': ['Frontend System Design (RADIO)', 'Modular Architecture', 'SOLID / Dependency Inversion', 'Component-Driven Development', 'State Management Patterns', 'REST API Design', 'Schema-shared Contracts (Zod)'],
+    'Security & Quality': ['RBAC', 'OAuth / OIDC', 'Session Auth + CSRF', 'TOTP 2FA', 'Jest', 'Vitest', 'React Testing Library', 'Performance Optimization'],
+    'Backend & Data': ['Node.js / Express', 'NestJS + Fastify', 'PostgreSQL', 'Drizzle ORM', 'Redis', 'BullMQ', 'MongoDB', 'Razorpay', 'LLM integration (Claude)'],
+    'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Caddy', 'AWS (EC2, RDS, S3, SES, CloudFront, CDK)', 'Cloudflare', 'GitHub Actions CI/CD']
 };
 
 export const experience: Experience[] = [

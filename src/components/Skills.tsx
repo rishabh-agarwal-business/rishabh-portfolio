@@ -1,9 +1,9 @@
 import { skills } from "@/data/data";
-import { Blocks, Code2, Palette, Shield, Sparkles, Wrench, Zap, type LucideIcon } from "lucide-react"
+import { Blocks, Code2, Palette, Server, Shield, Sparkles, Wrench, Zap, type LucideIcon } from "lucide-react"
 import { memo, useMemo, useState } from "react"
 import { SectionHeader } from "./ui/SectionHeader";
 import { AnimatePresence, motion } from "motion/react";
-import { GradientCard } from "./ui/GradientCard";
+import { Spotlight } from "./fx/Spotlight";
 import { GradientText } from "./ui/GradientText";
 
 const categoryIcons: Record<string, LucideIcon> = {
@@ -12,6 +12,7 @@ const categoryIcons: Record<string, LucideIcon> = {
     'UI & Design Systems': Palette,
     'Architecture & Patterns': Wrench,
     'Security & Quality': Shield,
+    'Backend & Data': Server,
     'Tools & Infrastructure': Zap
 }
 
@@ -31,7 +32,7 @@ const Skills = () => {
     }, []);
 
     return (
-        <section id="skills" aria-labelledby="skills-title" className="py-20 px-6">
+        <section id="skills" data-scene="helix" aria-labelledby="skills-title" className="py-20 px-6">
             <div className="max-w-6xl mx-auto">
                 <SectionHeader
                     id="skills-title"
@@ -68,10 +69,6 @@ const Skills = () => {
 
 export default Skills;
 
-/**
- * Skills sidebar component - memoized for performance
- * Follows Single Responsibility Principle
- */
 const SkillsSidebar = memo(function SkillsSidebar({
     skillsArray,
     selectedCategory,
@@ -98,13 +95,13 @@ const SkillsSidebar = memo(function SkillsSidebar({
                         aria-pressed={selectedCategory === index}
                         onClick={() => onSelectCategory(index)}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all cursor-pointer ${selectedCategory === index
-                            ? 'bg-linear-to-r from-zinc-700/40 to-gray-700/40 border-l-2 border-zinc-500'
+                            ? 'bg-linear-to-r from-indigo-500/15 to-transparent border-l-2 border-indigo-400'
                             : 'hover:bg-accent/50 border-l-2 border-transparent'
                             }`}
                         whileHover={{ x: 4 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <Icon className={`w-5 h-5 shrink-0 ${selectedCategory === index ? 'text-zinc-400' : 'text-muted-foreground'
+                        <Icon className={`w-5 h-5 shrink-0 ${selectedCategory === index ? 'text-indigo-300' : 'text-muted-foreground'
                             }`} />
                         <span className={`text-sm font-medium ${selectedCategory === index ? 'text-foreground' : 'text-muted-foreground'
                             }`}>
@@ -117,10 +114,6 @@ const SkillsSidebar = memo(function SkillsSidebar({
     );
 });
 
-/**
- * Skills content component - memoized for performance
- * Follows Single Responsibility Principle
- */
 const SkillsContent = memo(function SkillsContent({
     skill,
     selectedCategory
@@ -156,23 +149,19 @@ const SkillsContent = memo(function SkillsContent({
                     ))}
                 </div>
 
-                {/* Decorative Gradient Element */}
-                <GradientCard gradient="subtle" className="mt-8 p-6">
+                <Spotlight className="mt-8 p-6 rounded-2xl border border-white/10 bg-white/[0.03]">
                     <div className="flex items-start gap-3">
                         <Sparkles className="w-5 h-5 text-zinc-400 mt-0.5 shrink-0" />
                         <p className="text-sm text-muted-foreground leading-relaxed">
                             <span className="text-foreground font-semibold">Expert proficiency</span> in these technologies, with hands-on experience building production-grade applications serving thousands of users.
                         </p>
                     </div>
-                </GradientCard>
+                </Spotlight>
             </div>
         </motion.div>
     );
 });
 
-/**
- * Individual skill pill component - memoized for performance
- */
 const SkillPill = memo(function SkillPill({ item, index }: { item: string; index: number }) {
     return (
         <motion.div
@@ -189,9 +178,6 @@ const SkillPill = memo(function SkillPill({ item, index }: { item: string; index
     );
 });
 
-/**
- * Mobile skills accordion - memoized for performance
- */
 const SkillsMobile = memo(function SkillsMobile({
     skillsArray,
     selectedCategory,
@@ -223,7 +209,7 @@ const SkillsMobile = memo(function SkillsMobile({
                             onClick={() => onSelectCategory(index)}
                             className="w-full flex items-center gap-3 p-4 text-left"
                         >
-                            <Icon className={`w-5 h-5 shrink-0 ${isOpen ? 'text-zinc-400' : 'text-muted-foreground'}`} />
+                            <Icon className={`w-5 h-5 shrink-0 ${isOpen ? 'text-indigo-300' : 'text-muted-foreground'}`} />
                             <span className={`text-base font-semibold font-display ${isOpen ? 'text-foreground' : 'text-muted-foreground'
                                 }`}>
                                 {skill.category}

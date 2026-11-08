@@ -3,11 +3,16 @@
 Personal portfolio of **Rishabh Agarwal**, Senior Frontend Engineer.
 Live: **https://rishabh-agarwal.vercel.app**
 
+![Hero](screenshots/hero.jpg)
+
+![Featured project](screenshots/featured-project.jpg)
+
 ## Stack
 
 - React 19 + TypeScript (strict) + Vite 7
 - Tailwind CSS v4
 - Motion (animations, respects `prefers-reduced-motion`)
+- three.js (interactive network-globe hero, lazy-loaded after first paint)
 - React Router 7 (case-study pages are code-split)
 - Self-hosted variable fonts (Inter, Space Grotesk) via Fontsource
 

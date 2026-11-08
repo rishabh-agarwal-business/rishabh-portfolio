@@ -36,7 +36,7 @@ export default function CaseStudy() {
     const next = caseStudies[(index + 1) % caseStudies.length];
 
     return (
-        <article className="min-h-screen">
+        <article data-scene="grid" className="min-h-screen">
             <title>{`${caseStudy.title} — Case Study | ${profile.name}`}</title>
             <meta name="description" content={caseStudy.shortDescription} />
             <div className="pt-24 pb-20 px-6">
@@ -79,8 +79,8 @@ export default function CaseStudy() {
                                 <ProjectLinks
                                     projectName={caseStudy.title}
                                     repoLink={caseStudy.repoLink}
-                                    packageLink={caseStudy.packageLink}
                                     demoLink={caseStudy.demoLink}
+                                    youtubeLink={caseStudy.youtubeLink}
                                     size={22}
                                 />
                             </div>
@@ -156,7 +156,7 @@ export default function CaseStudy() {
                         </motion.div>
 
                         {/* Technical Architecture */}
-                        <motion.div
+                        <motion.div data-scene="layers"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -183,7 +183,7 @@ export default function CaseStudy() {
                             </h2>
                             <div className="grid gap-3">
                                 {caseStudy.systemDesignHighlights.map((item, index) => (
-                                    <motion.div
+                                    <motion.div data-scene="helix"
                                         key={index}
                                         className="p-4 border border-border rounded-lg bg-background hover:border-primary/40 transition-colors"
                                         initial={{ opacity: 0, x: -20 }}
@@ -305,7 +305,7 @@ export default function CaseStudy() {
                         </motion.div>
 
                         {/* Tradeoffs & Decisions */}
-                        <motion.div
+                        <motion.div data-scene="icosahedron"
                             className="p-6 bg-accent rounded-lg"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -351,7 +351,7 @@ export default function CaseStudy() {
                         </motion.div>
 
                         {/* Impact & Metrics */}
-                        <motion.div
+                        <motion.div data-scene="portal"
                             className="p-6 bg-primary/5 border border-primary/20 rounded-lg"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}

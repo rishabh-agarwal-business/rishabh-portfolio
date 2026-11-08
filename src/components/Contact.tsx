@@ -24,7 +24,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" aria-labelledby="contact-title" className="py-20 px-6">
+        <section id="contact" data-scene="portal" aria-labelledby="contact-title" className="py-20 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="text-center space-y-8">
                     <SectionHeader
