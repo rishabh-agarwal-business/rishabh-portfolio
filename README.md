@@ -1,7 +1,7 @@
 # Rishabh Agarwal — Portfolio
 
 Personal portfolio of **Rishabh Agarwal**, Senior Frontend Engineer.
-Live: **https://rishabh-agarwal.vercel.app**
+Live: **https://rishabhagarwal.dev**
 
 ![Hero](screenshots/hero.jpg)
 
