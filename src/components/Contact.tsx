@@ -30,7 +30,7 @@ export default function Contact() {
                     <SectionHeader
                         id="contact-title"
                         title="Get In Touch"
-                        subtitle="Open to discussing senior frontend roles, interesting problems, and open-source collaboration."
+                        subtitle="Open to senior and staff engineering roles, interesting problems and product collaborations."
                         titleClassName="text-3xl md:text-4xl text-center"
                         subtitleClassName="text-lg text-center"
                         centered

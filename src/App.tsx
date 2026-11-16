@@ -30,7 +30,7 @@ const MARQUEE = ['React 19', 'TypeScript', 'Angular', 'Next.js', 'TanStack Query
 function HomePage() {
   return (
     <>
-      <title>Rishabh Agarwal — Senior Frontend Engineer</title>
+      <title>Rishabh Agarwal — Senior Software Engineer</title>
       <Hero />
       <Marquee items={MARQUEE} />
       <Skills />

@@ -1,7 +1,7 @@
 /** Single source of truth for personal details used across the site */
 export const profile = {
     name: 'Rishabh Agarwal',
-    title: 'Senior Frontend Engineer',
+    title: 'Senior Software Engineer',
     yearsOfExperience: '7+',
     location: 'Rudrapur, Uttarakhand, India',
     email: 'rishabh.developer1509@gmail.com',
@@ -208,8 +208,9 @@ export const skills: Record<string, string[]> = {
     'Languages': ['JavaScript (ES6+)', 'TypeScript', 'HTML5', 'CSS3', 'SQL'],
     'Frameworks & Libraries': ['React 19', 'Next.js', 'Angular', 'Redux Toolkit', 'RTK Query', 'TanStack Query', 'Zustand', 'RxJS', 'React Flow', 'three.js'],
     'UI & Design Systems': ['Tailwind CSS', 'Material UI', 'Bootstrap', 'Responsive Design', 'Accessibility (a11y)'],
-    'Architecture & Patterns': ['Frontend System Design (RADIO)', 'Modular Architecture', 'SOLID / Dependency Inversion', 'Component-Driven Development', 'State Management Patterns', 'REST API Design', 'Schema-shared Contracts (Zod)'],
+    'Architecture & Patterns': ['Frontend System Design (RADIO)', 'Backend System Design', 'Modular Architecture', 'SOLID / Dependency Inversion', 'Component-Driven Development', 'State Management Patterns', 'REST API Design', 'Schema-shared Contracts (Zod)'],
     'Security & Quality': ['RBAC', 'OAuth / OIDC', 'Session Auth + CSRF', 'TOTP 2FA', 'Jest', 'Vitest', 'React Testing Library', 'Performance Optimization'],
+    'AI & LLMs': ['Claude API (Anthropic, AWS Bedrock)', 'Prompt Design', 'Structured Outputs (Zod)', 'LLM Evaluation Rubrics', 'Cost & Rate-limit Controls', 'Graceful AI Fallbacks'],
     'Backend & Data': ['Node.js / Express', 'NestJS + Fastify', 'PostgreSQL', 'Drizzle ORM', 'Redis', 'BullMQ', 'MongoDB', 'Razorpay', 'LLM integration (Claude)'],
     'Tools & Infrastructure': ['Git', 'Vite', 'Webpack', 'Docker', 'Caddy', 'AWS (EC2, RDS, S3, SES, CloudFront, CDK)', 'Cloudflare', 'GitHub Actions CI/CD']
 };
