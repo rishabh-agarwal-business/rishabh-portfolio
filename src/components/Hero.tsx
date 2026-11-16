@@ -22,7 +22,7 @@ const fadeUp = (delay: number) => ({
 });
 
 const stats = [
-    { value: profile.yearsOfExperience, label: 'Years building production web apps' },
+    { value: profile.yearsOfExperience, label: 'Years shipping production software' },
     { value: String(experience.length), label: 'Companies, incl. Deloitte & Capgemini' },
     { value: '1', label: 'Full-stack SaaS built & launched solo' },
 ];
@@ -33,7 +33,7 @@ const socials = [
     { href: `mailto:${profile.email}`, label: 'Email', icon: Mail },
 ];
 
-const BUILDS = ['high-performance UIs', 'design systems', 'enterprise React apps', 'full-stack SaaS', 'secure healthcare portals'];
+const BUILDS = ['full-stack SaaS', 'high-performance UIs', 'scalable APIs', 'LLM-powered features', 'enterprise React apps', 'secure healthcare portals'];
 
 /** Defer the WebGL scene until the browser is idle after first paint. */
 function useIdleMount() {
@@ -77,7 +77,7 @@ const Hero = () => {
                                     <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
                                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                                 </span>
-                                Open to Senior / Staff Frontend roles
+                                Open to Senior / Staff engineering roles
                             </motion.p>
                         )}
 
@@ -86,7 +86,7 @@ const Hero = () => {
                                 Hi, I'm {profile.name}
                             </motion.span>
                             <span className="block text-5xl sm:text-6xl md:text-7xl">
-                                <SplitReveal text="Senior Frontend" delay={0.15} className="text-zinc-100" />
+                                <SplitReveal text="Senior Software" delay={0.15} className="text-zinc-100" />
                             </span>
                             <span className="block text-5xl sm:text-6xl md:text-7xl">
                                 <SplitReveal
@@ -107,9 +107,9 @@ const Hero = () => {
 
                         <motion.p className="text-lg text-muted-foreground leading-relaxed max-w-xl" {...fadeUp(0.65)}>
                             {profile.yearsOfExperience} years shipping{' '}
-                            <span className="text-foreground font-medium">enterprise-scale applications</span> with React,
-                            Angular and TypeScript across{' '}
-                            <span className="text-foreground font-medium">healthcare, fintech and SaaS</span>.
+                            <span className="text-foreground font-medium">production web products</span> across healthcare,
+                            banking and SaaS — frontend depth in React, Angular and TypeScript,{' '}
+                            <span className="text-foreground font-medium">full-stack</span> across Node.js, PostgreSQL and AWS.
                         </motion.p>
 
                         <motion.div className="flex flex-col sm:flex-row gap-3" {...fadeUp(0.75)}>
@@ -211,7 +211,7 @@ const Hero = () => {
                             I've spent the last{' '}
                             <span className="font-semibold text-foreground">{profile.yearsOfExperience} years</span>{' '}
                             building scalable, high-performance web applications for enterprise clients in{' '}
-                            <span className="font-semibold text-foreground">healthcare, fintech, and SaaS</span>.
+                            <span className="font-semibold text-foreground">healthcare, banking and SaaS</span>.
                         </p>
                         <p>
                             I specialize in architecting complex{' '}

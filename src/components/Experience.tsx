@@ -13,7 +13,7 @@ export default function Experience() {
                 <SectionHeader
                     id="experience-title"
                     title="Work Experience"
-                    subtitle="Healthcare, consulting, data and banking — shipping production frontends across four organizations."
+                    subtitle="Healthcare, consulting, data and banking — shipping production software across four organizations."
                 />
 
                 {/* Desktop Layout: Sidebar + Content */}
